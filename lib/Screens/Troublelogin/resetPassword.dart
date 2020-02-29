@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:autoassit/Controllers/ApiServices/VerifyEmailService.dart';
-import 'package:autoassit/Screens/MainScreens/home.dart';
+import 'package:autoassit/Screens/HomePage/home.dart';
 import 'package:autoassit/Animations/FadeAnimation.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
