@@ -69,7 +69,7 @@ class _LoginPageState extends State<LoginPage> {
     pr = new ProgressDialog(context, type: ProgressDialogType.Normal);
 
     pr.style(
-        message: 'Please wait...',
+        message: 'Verifying Phone...',
         borderRadius: 10.0,
         progressWidget: Container(
             height: 30,
@@ -182,7 +182,6 @@ class _LoginPageState extends State<LoginPage> {
                                           color: Color(0xFFE0E0E0)))),
                               child: TextField(
                                 controller: _phone,
-                                maxLength: 10,
                                 keyboardType: TextInputType.phone,
                                 decoration: InputDecoration(
                                     icon: Icon(Icons.phone_android),
@@ -273,7 +272,9 @@ class _LoginPageState extends State<LoginPage> {
 
   void initializeLogin() {
     pr.show();
-    final body = {"phone": _phone.text};
+    final phonenum = _phone.text;
+    print(phonenum);
+    final body = {"phone": "$phonenum"};
 
     LoginwithOtpService.LoginWithOtp(body).then((success) async {
       print(success);
