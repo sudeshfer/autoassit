@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:autoassit/Screens/MainScreens/home.dart';
+import 'package:autoassit/Screens/HomePage/home.dart';
 import 'dart:async';
 import 'package:autoassit/Screens/Login/pincode_verify.dart';
 
