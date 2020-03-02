@@ -1,6 +1,7 @@
+import 'package:autoassit/Screens/Customer/add_customer.dart';
 import 'package:autoassit/Screens/Login/login_page.dart';
 import 'package:autoassit/Screens/Login/pincode_verify.dart';
-import 'package:autoassit/Screens/MainScreens/home.dart';
+import 'package:autoassit/Screens/HomePage/home.dart';
 import 'package:autoassit/Screens/SplashScreen/splash_screen.dart';
 import 'package:autoassit/Screens/Troublelogin/forgotPassword.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,8 @@ class MyApp extends StatelessWidget {
         "/login": (BuildContext context) => new LoginPage(),
         "/pincode": (BuildContext context) => new PincodeVerify(),
         "/home": (BuildContext context) => new HomePage(),
-         "/forgotpw": (BuildContext context) => new ForgotPassword(),
+        "/forgotpw": (BuildContext context) => new ForgotPassword(),
+        "/addCustomer": (BuildContext context) => new AddCustomer(),
 
        
       },
