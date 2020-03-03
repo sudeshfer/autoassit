@@ -1,9 +1,12 @@
 import 'package:autoassit/Screens/Customer/add_customer.dart';
+import 'package:autoassit/Screens/Customer/view_customer.dart';
 import 'package:autoassit/Screens/Login/login_page.dart';
 import 'package:autoassit/Screens/Login/pincode_verify.dart';
 import 'package:autoassit/Screens/HomePage/home.dart';
 import 'package:autoassit/Screens/SplashScreen/splash_screen.dart';
 import 'package:autoassit/Screens/Troublelogin/forgotPassword.dart';
+import 'package:autoassit/Screens/Vehicle/addVehicle.dart';
+import 'package:autoassit/Screens/Vehicle/view_vehicle.dart';
 import 'package:flutter/material.dart';
 
 void main(){
@@ -25,6 +28,9 @@ class MyApp extends StatelessWidget {
         "/home": (BuildContext context) => new HomePage(),
         "/forgotpw": (BuildContext context) => new ForgotPassword(),
         "/addCustomer": (BuildContext context) => new AddCustomer(),
+        "/addVehicle": (BuildContext context) => new AddVehicle(),
+        "/viewCustomer": (BuildContext context) => new ViewCustomer(),
+        "/viewVehicle": (BuildContext context) => new ViewVehicle(),
 
        
       },

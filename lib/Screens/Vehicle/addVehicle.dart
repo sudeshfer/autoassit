@@ -1,46 +1,23 @@
 import 'dart:io';
-import 'package:autoassit/Controllers/ApiServices/Customer_Services/addCustomer_Service.dart';
+import 'package:autoassit/Controllers/ApiServices/Vehicle_Services/addVehicle_Service.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 
-class AddCustomer extends StatefulWidget {
-  AddCustomer({Key key}) : super(key: key);
+class AddVehicle extends StatefulWidget {
+  AddVehicle({Key key}) : super(key: key);
 
   @override
-  _AddCustomerState createState() => _AddCustomerState();
+  _AddVehicleState createState() => _AddVehicleState();
 }
 
-class _AddCustomerState extends State<AddCustomer> {
-  final _fname = TextEditingController();
-  final _lname = TextEditingController();
-  final _email = TextEditingController();
-  final _tel = TextEditingController();
-  final _mobile = TextEditingController();
-  get _role => _currentRole;
-  final _p_code = TextEditingController();
-  final _street = TextEditingController();
-  final _city = TextEditingController();
-  final _cLimit = TextEditingController();
-
-  List __role = ["Owner", "Driver"];
-  List<DropdownMenuItem<String>> _dropDownMenuItems;
-  String _currentRole;
-  String _errorTxt = '';
-
-  @override
-  void initState() {
-    _dropDownMenuItems = getDropDownMenuItems();
-    _currentRole = _dropDownMenuItems[0].value;
-    super.initState();
-  }
-
-  List<DropdownMenuItem<String>> getDropDownMenuItems() {
-    List<DropdownMenuItem<String>> items = new List();
-    for (String role in __role) {
-      items.add(new DropdownMenuItem(value: role, child: new Text(role)));
-    }
-    return items;
-  }
+class _AddVehicleState extends State<AddVehicle> {
+  final _vNumber = TextEditingController();
+  final _vMake = TextEditingController();
+  final _vModel = TextEditingController();
+  final _vMyear = TextEditingController();
+  final _vCapacity = TextEditingController();
+  final _vODO = TextEditingController();
+  final _vDescription = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +60,7 @@ class _AddCustomerState extends State<AddCustomer> {
             height: MediaQuery.of(context).size.height - 550.0,
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
-              color: Colors.amber,
+              color: Color(0xFF81C784),
               borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(75.0),
                   bottomRight: Radius.circular(75.0)),
@@ -99,7 +76,7 @@ class _AddCustomerState extends State<AddCustomer> {
               children: <Widget>[
                 Center(
                     child: Image.asset(
-                  "assets/images/add_cus.png",
+                  "assets/images/add_vehi.png",
                   width: 150,
                   height: 100,
                 )),
@@ -107,7 +84,7 @@ class _AddCustomerState extends State<AddCustomer> {
                   padding: const EdgeInsets.only(left: 30.0),
                   child: Center(
                     child: Text(
-                      'Customer\n     Registration.. ',
+                      'Vehicle\n     Registration.. ',
                       style: TextStyle(
                           textBaseline: TextBaseline.alphabetic,
                           fontFamily: 'Montserrat',
@@ -125,10 +102,9 @@ class _AddCustomerState extends State<AddCustomer> {
 
   Widget _buildTextfields(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         Container(
-          //height: MediaQuery.of(context).size.height,
+          height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
           padding: EdgeInsets.only(top: 40),
           child: Column(
@@ -145,211 +121,21 @@ class _AddCustomerState extends State<AddCustomer> {
                       BoxShadow(color: Colors.black12, blurRadius: 5)
                     ]),
                 child: TextField(
-                  controller: _fname,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    icon: Icon(
-                      Icons.recent_actors,
-                      color: Colors.grey,
-                    ),
-                    hintText: 'First Name',
-                  ),
-                ),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width / 1.2,
-                height: 45,
-                margin: EdgeInsets.only(top: 32),
-                padding:
-                    EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 2),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(50)),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(color: Colors.black12, blurRadius: 5)
-                    ]),
-                child: TextField(
-                  controller: _lname,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    icon: Icon(
-                      Icons.recent_actors,
-                      color: Colors.grey,
-                    ),
-                    hintText: 'Last Name',
-                  ),
-                ),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width / 1.2,
-                height: 45,
-                margin: EdgeInsets.only(top: 32),
-                padding:
-                    EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 2),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(50)),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(color: Colors.black12, blurRadius: 5)
-                    ]),
-                child: TextField(
-                  controller: _email,
-                  keyboardType: TextInputType.multiline,
-                  maxLines: 10,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    icon: Icon(
-                      Icons.email,
-                      color: Colors.grey,
-                    ),
-                    hintText: 'Email',
-                  ),
-                ),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width / 1.2,
-                height: 45,
-                margin: EdgeInsets.only(top: 32),
-                padding:
-                    EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 2),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(50)),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(color: Colors.black12, blurRadius: 5)
-                    ]),
-                child: TextField(
-                  keyboardType: TextInputType.number,
-                  controller: _tel,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    icon: Icon(
-                      Icons.phone,
-                      color: Colors.grey,
-                    ),
-                    hintText: 'Telephone Number',
-                  ),
-                ),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width / 1.2,
-                height: 45,
-                margin: EdgeInsets.only(top: 32),
-                padding:
-                    EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 2),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(50)),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(color: Colors.black12, blurRadius: 5)
-                    ]),
-                child: TextField(
-                  keyboardType: TextInputType.number,
-                  controller: _mobile,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    icon: Icon(
-                      Icons.phone_android,
-                      color: Colors.grey,
-                    ),
-                    hintText: 'Mobile Number',
-                  ),
-                ),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width / 1.2,
-                height: 45,
-                margin: EdgeInsets.only(top: 32),
-                padding:
-                    EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 2),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(50)),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(color: Colors.black12, blurRadius: 5)
-                    ]),
-                child: TextField(
-                  controller: _cLimit,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    icon: Icon(
-                      Icons.credit_card,
-                      color: Colors.grey,
-                    ),
-                    hintText: 'Credit Limit',
-                  ),
-                ),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width / 1.2,
-                height: 15,
-                margin: EdgeInsets.only(top: 32),
-                padding: EdgeInsets.only(left: 16, right: 16),
-                child: Text(
-                  "Select The Role :",
-                  style: TextStyle(
-                    color: Color.fromRGBO(143, 148, 251, 1),
-                    fontSize: 15,
-                  ),
-                ),
-              ),
-              Container(
-                  width: MediaQuery.of(context).size.width / 1.2,
-                  height: 40,
-                  margin: EdgeInsets.only(top: 25),
-                  padding: EdgeInsets.only(left: 16, right: 16),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(50)),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(color: Colors.black12, blurRadius: 5)
-                      ]),
-                  child: new DropdownButton(
-                    value: _currentRole,
-                    items: _dropDownMenuItems,
-                    onChanged: changedDropDownItem,
-                  )),
-              Container(
-                width: MediaQuery.of(context).size.width / 1.2,
-                height: 15,
-                margin: EdgeInsets.only(top: 32),
-                padding: EdgeInsets.only(left: 16, right: 16),
-                child: Text(
-                  "Enter The Address :",
-                  style: TextStyle(
-                    color: Color.fromRGBO(143, 148, 251, 1),
-                    fontSize: 15,
-                  ),
-                ),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width / 1.2,
-                height: 45,
-                margin: EdgeInsets.only(top: 25),
-                padding:
-                    EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 2),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(50)),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(color: Colors.black12, blurRadius: 5)
-                    ]),
-                child: TextField(
-                  controller: _p_code,
+                  controller: _vNumber,
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     icon: Icon(
                       Icons.code,
                       color: Colors.grey,
                     ),
-                    hintText: 'Postal Code',
+                    hintText: 'Vehicle Number',
                   ),
                 ),
               ),
               Container(
                 width: MediaQuery.of(context).size.width / 1.2,
                 height: 45,
-                margin: EdgeInsets.only(top: 25),
+                margin: EdgeInsets.only(top: 32),
                 padding:
                     EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 2),
                 decoration: BoxDecoration(
@@ -359,21 +145,21 @@ class _AddCustomerState extends State<AddCustomer> {
                       BoxShadow(color: Colors.black12, blurRadius: 5)
                     ]),
                 child: TextField(
-                  controller: _street,
+                  controller: _vMake,
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     icon: Icon(
-                      Icons.streetview,
+                      Icons.branding_watermark,
                       color: Colors.grey,
                     ),
-                    hintText: 'Street',
+                    hintText: 'Make',
                   ),
                 ),
               ),
               Container(
                 width: MediaQuery.of(context).size.width / 1.2,
                 height: 45,
-                margin: EdgeInsets.only(top: 25),
+                margin: EdgeInsets.only(top: 32),
                 padding:
                     EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 2),
                 decoration: BoxDecoration(
@@ -383,18 +169,116 @@ class _AddCustomerState extends State<AddCustomer> {
                       BoxShadow(color: Colors.black12, blurRadius: 5)
                     ]),
                 child: TextField(
-                  controller: _city,
+                  controller: _vModel,
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     icon: Icon(
-                      Icons.location_city,
+                      Icons.view_module,
                       color: Colors.grey,
                     ),
-                    hintText: 'City',
+                    hintText: 'Model',
                   ),
                 ),
               ),
-              Divider(),
+              Container(
+                width: MediaQuery.of(context).size.width / 1.2,
+                height: 45,
+                margin: EdgeInsets.only(top: 32),
+                padding:
+                    EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 2),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(50)),
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(color: Colors.black12, blurRadius: 5)
+                    ]),
+                child: TextField(
+                  keyboardType: TextInputType.number,
+                  controller: _vMyear,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    icon: Icon(
+                      Icons.calendar_view_day,
+                      color: Colors.grey,
+                    ),
+                    hintText: 'Manufactured Year',
+                  ),
+                ),
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width / 1.2,
+                height: 45,
+                margin: EdgeInsets.only(top: 32),
+                padding:
+                    EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 2),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(50)),
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(color: Colors.black12, blurRadius: 5)
+                    ]),
+                child: TextField(
+                  keyboardType: TextInputType.number,
+                  controller: _vODO,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    icon: Icon(
+                      Icons.timer,
+                      color: Colors.grey,
+                    ),
+                    hintText: 'ODO (Milage)',
+                  ),
+                ),
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width / 1.2,
+                height: 45,
+                margin: EdgeInsets.only(top: 32),
+                padding:
+                    EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 2),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(50)),
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(color: Colors.black12, blurRadius: 5)
+                    ]),
+                child: TextField(
+                  controller: _vCapacity,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    icon: Icon(
+                      Icons.tonality,
+                      color: Colors.grey,
+                    ),
+                    hintText: 'Engine Capacity',
+                  ),
+                ),
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width / 1.2,
+                height: 70,
+                margin: EdgeInsets.only(top: 32),
+                padding:
+                    EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 2),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(50)),
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(color: Colors.black12, blurRadius: 5)
+                    ]),
+                child: TextField(
+                  controller: _vDescription,
+                  maxLines: 5,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    icon: Icon(
+                      Icons.details,
+                      color: Colors.grey,
+                    ),
+                    labelText: 'Discription',
+                  ),
+                ),
+              ),
               Divider(),
             ],
           ),
@@ -419,13 +303,7 @@ class _AddCustomerState extends State<AddCustomer> {
     return GestureDetector(
       onTap: () {
         if (checkNull()) {
-          if (validateEmail()) {
-            if (validatephone()) {
-              postUserData();
-            }
-          } else {
-            errorDialog('ERROR', 'This is not a valid Email !');
-          }
+            postUserData();
         } else {
           errorDialog('ERROR', 'You should fill all the fields !');
           print("empty fields");
@@ -473,87 +351,46 @@ class _AddCustomerState extends State<AddCustomer> {
         .show();
   }
 
-  bool validateEmail() {
-    String email = _email.text;
-    bool emailValid = RegExp(
-            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-        .hasMatch(email);
-    if (emailValid) {
-      print("Valid email !");
-
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  bool validatephone() {
-    if (_tel.text.length < 10) {
-      errorDialog('ERROR', 'Telephone should \nlong 10 digits !');
-      return false;
-    } else if (_mobile.text.length < 10) {
-      errorDialog('ERROR', 'Mobile number should \nlong 10 digits !');
-      return false;
-    } else {
-      print("valid phone");
-      return true;
-    }
-  }
-
   postUserData() {
     final body = {
-      "fname": _fname.text,
-      "lname": _lname.text,
-      "email": _email.text,
-      "telephone": _tel.text,
-      "mobile": _mobile.text,
-      "credit_limit": _cLimit.text,
-      "role": _role,
-      "ad_l1": _p_code.text,
-      "ad_l2": _street.text,
-      "ad_l3": _city.text,
+      "vnumber": _vNumber.text,
+      "make": _vMake.text,
+      "model": _vModel.text,
+      "m_year": _vMyear.text,
+      "odo": _vODO.text,
+      "capacity": _vCapacity.text,
+      "description": _vDescription.text,
     };
-    RegisterCustomerService.RegisterCustomer(body).then((success) {
+    RegisterVehicleService.RegisterVehicle(body).then((success) {
       print(success);
       final _result = success;
       if (_result == "success") {
         clearcontrollers();
-        successDialog('Customer Registration successfull', 'Click Ok to see !');
+        successDialog('Vehicle Registration successfull', 'Click Ok to see !');
       } else {
         errorDialog('ERROR', _result);
       }
     });
   }
 
-  void changedDropDownItem(String selectedRole) {
-    setState(() {
-      _currentRole = selectedRole;
-    });
-  }
-
   void clearcontrollers() {
-    _fname.text = '';
-    _lname.text = '';
-    _email.text = '';
-    _tel.text = '';
-    _mobile.text = '';
-    _p_code.text = '';
-    _street.text = '';
-    _city.text = '';
-    _cLimit.text = '';
+    _vNumber.text = '';
+    _vMake.text = '';
+    _vModel.text = '';
+    _vMyear.text = '';
+    _vODO.text = '';
+    _vCapacity.text = '';
+    _vDescription.text = '';
   }
 
   bool checkNull() {
-    if (_fname.text == '' ||
-        _lname.text == '' ||
-        _email.text == '' ||
-        _tel.text == '' ||
-        _mobile.text == '' ||
-        _currentRole == '' ||
-        _p_code.text == '' ||
-        _street.text == '' ||
-        _city.text == '' ||
-        _cLimit.text == '') {
+    if (_vNumber.text == '' ||
+        _vMake.text == '' ||
+        _vModel.text == '' ||
+        _vMyear.text == '' ||
+        _vODO.text == '' ||
+        _vCapacity.text == '' ||
+        _vDescription.text == '') {
       return false;
     } else {
       return true;

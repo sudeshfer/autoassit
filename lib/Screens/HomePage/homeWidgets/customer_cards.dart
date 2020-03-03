@@ -29,7 +29,7 @@ class _CustomerListState extends State<CustomerList> {
             children: <Widget>[
               getCustomerCard('assets/images/add_cus.png','     Add \nCustomer', onTap: (){Navigator.of(context).pushNamed("/addCustomer");} ),
               SizedBox(width: 15.0),
-              getCustomerCard('assets/images/personas.png', '     View \nCustomers', onTap: (){print("Go to view customer screen !");}),
+              getCustomerCard('assets/images/personas.png', '     View \nCustomers', onTap: (){Navigator.of(context).pushNamed("/viewCustomer");}),
               SizedBox(width: 15.0),
               getCustomerCard('assets/images/cus_history.png', 'Customer\nHistory', onTap: (){print("Go to customer history screen !");}),
               SizedBox(width: 15.0),

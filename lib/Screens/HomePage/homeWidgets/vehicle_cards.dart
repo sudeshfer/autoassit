@@ -30,9 +30,9 @@ class _VehicleCardsState extends State<VehicleCards> {
             controller: _scrollController,
             scrollDirection: Axis.horizontal,
             children: <Widget>[
-              getVehicleCard('assets/images/add_vehi.png','   Add\nVehicle', onTap: (){print("Go to add vehicle screen !");} ),
+              getVehicleCard('assets/images/add_vehi.png','   Add\nVehicle', onTap: (){Navigator.of(context).pushNamed("/addVehicle");} ),
               SizedBox(width: 15.0),
-              getVehicleCard('assets/images/view.png', '   View\nVehicles', onTap: (){print("Go to view vehicles screen !");}),
+              getVehicleCard('assets/images/view.png', '   View\nVehicles', onTap: (){Navigator.of(context).pushNamed("/viewVehicle");}),
               SizedBox(width: 15.0),
               getVehicleCard('assets/images/vehi_history.png', 'Vehicles\nHistory', onTap: (){print("Go to vehicles history screen !");}),
               SizedBox(width: 15.0),
