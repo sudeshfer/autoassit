@@ -69,10 +69,10 @@ class _ViewVehicleState extends State<ViewVehicle> {
 
    Widget _buildTopAppbar(BuildContext context) {
     return PreferredSize(
-      preferredSize: Size.fromHeight(270.0),
+      preferredSize: Size.fromHeight(190.0),
       child: Container(
         color: Colors.transparent,
-        height: 270.0,
+        height: MediaQuery.of(context).size.height/0.5,
         alignment: Alignment.center,
         child: _buildStack(context),
       ),
@@ -96,7 +96,7 @@ class _ViewVehicleState extends State<ViewVehicle> {
         ),
         Positioned(
             left: 10,
-            top: 30,
+            top: MediaQuery.of(context).size.height / 60.0,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               // mainAxisAlignment: MainAxisAlignment.end,
@@ -111,7 +111,7 @@ class _ViewVehicleState extends State<ViewVehicle> {
                   padding: const EdgeInsets.only(left: 30.0),
                   child: Center(
                     child: Text(
-                      'Customer List.. ',
+                      'Customer\nList.. ',
                       style: TextStyle(
                           textBaseline: TextBaseline.alphabetic,
                           fontFamily: 'Montserrat',
@@ -126,7 +126,7 @@ class _ViewVehicleState extends State<ViewVehicle> {
             )),
         Positioned(
             left: 20,
-            top: 180,
+            top: MediaQuery.of(context).size.height / 4.8,
             child: Column(children: <Widget>[_buildSearchBar(context)]))
       ],
     );
