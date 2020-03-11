@@ -21,10 +21,10 @@ class _VehicleCardsState extends State<VehicleCards> {
 
   @override
   Widget build(BuildContext context) {
-        return ListView(
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Container(
-          height: 350.0,
+        Flexible(
           child: ListView(
             padding: EdgeInsets.only(left: 25.0),
             controller: _scrollController,
@@ -47,7 +47,7 @@ class _VehicleCardsState extends State<VehicleCards> {
     return Stack(
       children: <Widget>[
         Container(
-          height: 200.0,
+          height: 180.0,
           width: 140.0,
           child: Container(
             decoration: BoxDecoration(
@@ -83,7 +83,7 @@ class _VehicleCardsState extends State<VehicleCards> {
           ),
         ),
         Padding(
-          padding: EdgeInsets.only(left: 45.0, top: 175.0),
+          padding: EdgeInsets.only(left: 45.0, top: 155.0),
           child: GestureDetector(
                  onTap: onTap,
                   child: Container(
