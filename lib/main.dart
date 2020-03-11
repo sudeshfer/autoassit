@@ -1,4 +1,5 @@
 import 'package:autoassit/Screens/Customer/add_customer.dart';
+import 'package:autoassit/Screens/Customer/pre_cus_list.dart';
 import 'package:autoassit/Screens/Customer/view_customer.dart';
 import 'package:autoassit/Screens/Login/login_page.dart';
 import 'package:autoassit/Screens/Login/pincode_verify.dart';
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
         "/addVehicle": (BuildContext context) => new AddVehicle(),
         "/viewCustomer": (BuildContext context) => new ViewCustomer(),
         "/viewVehicle": (BuildContext context) => new ViewVehicle(),
+        "/preCusList": (BuildContext context) => new PreCustomerList(),
 
        
       },

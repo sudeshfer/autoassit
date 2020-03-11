@@ -30,7 +30,7 @@ class _VehicleCardsState extends State<VehicleCards> {
             controller: _scrollController,
             scrollDirection: Axis.horizontal,
             children: <Widget>[
-              getVehicleCard('assets/images/add_vehi.png','   Add\nVehicle', onTap: (){Navigator.of(context).pushNamed("/addVehicle");} ),
+              getVehicleCard('assets/images/add_vehi.png','   Add\nVehicle', onTap: (){Navigator.of(context).pushNamed("/preCusList");} ),
               SizedBox(width: 15.0),
               getVehicleCard('assets/images/view.png', '   View\nVehicles', onTap: (){Navigator.of(context).pushNamed("/viewVehicle");}),
               SizedBox(width: 15.0),
@@ -47,7 +47,7 @@ class _VehicleCardsState extends State<VehicleCards> {
     return Stack(
       children: <Widget>[
         Container(
-          height: 180.0,
+          height: MediaQuery.of(context).size.height / 3.5,
           width: 140.0,
           child: Container(
             decoration: BoxDecoration(
@@ -83,7 +83,7 @@ class _VehicleCardsState extends State<VehicleCards> {
           ),
         ),
         Padding(
-          padding: EdgeInsets.only(left: 45.0, top: 155.0),
+          padding: EdgeInsets.only(left: 45.0, top: 170.0),
           child: GestureDetector(
                  onTap: onTap,
                   child: Container(

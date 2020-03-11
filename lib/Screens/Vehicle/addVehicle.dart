@@ -4,7 +4,8 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 
 class AddVehicle extends StatefulWidget {
-  AddVehicle({Key key}) : super(key: key);
+  final customer_id;
+  AddVehicle({Key key,this.customer_id}) : super(key: key);
 
   @override
   _AddVehicleState createState() => _AddVehicleState();
@@ -18,6 +19,14 @@ class _AddVehicleState extends State<AddVehicle> {
   final _vCapacity = TextEditingController();
   final _vODO = TextEditingController();
   final _vDescription = TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    print("customer id = "+widget.customer_id);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -360,6 +369,7 @@ class _AddVehicleState extends State<AddVehicle> {
       "odo": _vODO.text,
       "capacity": _vCapacity.text,
       "description": _vDescription.text,
+      "cusID": widget.customer_id
     };
     RegisterVehicleService.RegisterVehicle(body).then((success) {
       print(success);

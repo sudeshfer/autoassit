@@ -1,5 +1,6 @@
 class Customer {
 
+  String cusid;
   String fName;
   String lName;
   String email;
@@ -12,11 +13,12 @@ class Customer {
   String adL3;
   
  
-  Customer({this.fName,this.lName,this.email,this.telephone,this.mobile,this.cLimit,this.role,this.adL1,this.adL2,this.adL3});
+  Customer({this.cusid,this.fName,this.lName,this.email,this.telephone,this.mobile,this.cLimit,this.role,this.adL1,this.adL2,this.adL3});
  
   factory Customer.fromJson(Map<String, dynamic> json) {
     return Customer(
 
+      cusid: json["_id"] as String,
       fName: json["fname"] as String,
       lName: json["lname"] as String,
       email: json["email"] as String,
