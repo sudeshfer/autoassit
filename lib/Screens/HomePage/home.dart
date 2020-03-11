@@ -37,9 +37,9 @@ class _HomePageState extends State<HomePage>
     return new WillPopScope(
       onWillPop: _onBackPressed,
       child: new Scaffold(
-          body: ListView(
+          body: Column(
         children: <Widget>[
-          SizedBox(height: 15.0),
+          SizedBox(height: 25.0),
           Container(
               width: MediaQuery.of(context).size.width,
               padding: EdgeInsets.only(right: 10.0),
@@ -74,7 +74,9 @@ class _HomePageState extends State<HomePage>
           Padding(
             padding: const EdgeInsets.only(top: 10.0),
             child: Container(
-              height: MediaQuery.of(context).size.height - 435.0,
+              // color: Colors.amber,
+              // height: MediaQuery.of(context).size.height - 430.0,
+              height: MediaQuery.of(context).size.height / 2.8,
               child: _buildTabView(context)
             ),
           ),
@@ -112,7 +114,6 @@ class _HomePageState extends State<HomePage>
                 Tab(
                   child: Row(
                     children: <Widget>[
-                      // Image.asset('assets/images/vehicles.png',width: 20,height: 20,),
                       FaIcon(
                         FontAwesomeIcons.car,
                         size: 18,
