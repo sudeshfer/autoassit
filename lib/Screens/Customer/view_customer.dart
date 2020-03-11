@@ -68,10 +68,10 @@ class _ViewCustomerState extends State<ViewCustomer> {
 
   Widget _buildTopAppbar(BuildContext context) {
     return PreferredSize(
-      preferredSize: Size.fromHeight(270.0),
+      preferredSize: Size.fromHeight(190.0),
       child: Container(
         color: Colors.transparent,
-        height: 270.0,
+        height: MediaQuery.of(context).size.height/0.5,
         alignment: Alignment.center,
         child: _buildStack(context),
       ),
@@ -95,7 +95,7 @@ class _ViewCustomerState extends State<ViewCustomer> {
         ),
         Positioned(
             left: 10,
-            top: 40,
+            top: MediaQuery.of(context).size.height / 20.0,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               // mainAxisAlignment: MainAxisAlignment.end,
@@ -110,7 +110,7 @@ class _ViewCustomerState extends State<ViewCustomer> {
                   padding: const EdgeInsets.only(left: 30.0),
                   child: Center(
                     child: Text(
-                      'Customer List.. ',
+                      'Customer   \n      List.. ',
                       style: TextStyle(
                           textBaseline: TextBaseline.alphabetic,
                           fontFamily: 'Montserrat',
@@ -125,7 +125,7 @@ class _ViewCustomerState extends State<ViewCustomer> {
             )),
         Positioned(
             left: 20,
-            top: 180,
+            top: MediaQuery.of(context).size.height / 4.8,
             child: Column(children: <Widget>[_buildSearchBar(context)]))
       ],
     );
@@ -281,67 +281,55 @@ class _ViewCustomerState extends State<ViewCustomer> {
 
   Widget _buildInnerBottomWidget(index) {
     return Builder(builder: (context) {
-      return Padding(
-        padding: const EdgeInsets.only(bottom:8.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            Container(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: EdgeInsets.only(bottom: 20),
-                child: FlatButton(
-                  onPressed: () {
-                    print("clicked edit btn");
-                  },
-                  child: Text(
-                    "Edit",
-                  ),
-                  textColor: Colors.white,
-                  color: Colors.indigoAccent,
-                  splashColor: Colors.white.withOpacity(0.5),
-                ),
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          Container(
+            alignment: Alignment.bottomCenter,
+            child: FlatButton(
+              onPressed: () {
+                print("clicked edit btn");
+              },
+              child: Text(
+                "Edit",
               ),
+              textColor: Colors.white,
+              color: Colors.indigoAccent,
+              splashColor: Colors.white.withOpacity(0.5),
             ),
-            Container(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: EdgeInsets.only(bottom: 20),
-                child: FlatButton(
-                  onPressed: () {
-                    SimpleFoldingCellState foldingCellState =
-                        context.ancestorStateOfType(
-                            TypeMatcher<SimpleFoldingCellState>());
-                    foldingCellState?.toggleFold();
-                  },
-                  child: Text(
-                    "Close",
-                  ),
-                  textColor: Colors.white,
-                  color: Colors.indigoAccent,
-                  splashColor: Colors.white.withOpacity(0.5),
-                ),
+          ),
+          Container(
+            alignment: Alignment.bottomCenter,
+            child: FlatButton(
+              onPressed: () {
+                SimpleFoldingCellState foldingCellState =
+                    context.ancestorStateOfType(
+                        TypeMatcher<SimpleFoldingCellState>());
+                foldingCellState?.toggleFold();
+              },
+              child: Text(
+                "Close",
               ),
+              textColor: Colors.white,
+              color: Colors.indigoAccent,
+              splashColor: Colors.white.withOpacity(0.5),
             ),
-            Container(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: EdgeInsets.only(bottom: 20),
-                child: FlatButton(
-                  onPressed: () {
-                    print("clicked delete btn");
-                  },
-                  child: Text(
-                    "Delete",
-                  ),
-                  textColor: Colors.white,
-                  color: Colors.indigoAccent,
-                  splashColor: Colors.white.withOpacity(0.5),
-                ),
+          ),
+          Container(
+            alignment: Alignment.bottomCenter,
+            child: FlatButton(
+              onPressed: () {
+                print("clicked delete btn");
+              },
+              child: Text(
+                "Delete",
               ),
+              textColor: Colors.white,
+              color: Colors.indigoAccent,
+              splashColor: Colors.white.withOpacity(0.5),
             ),
-          ],
-        ),
+          ),
+        ],
       );
     });
   }
