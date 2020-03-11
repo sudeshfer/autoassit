@@ -92,7 +92,7 @@ class _AddCustomerState extends State<AddCustomer> {
         ),
         Positioned(
             left: 10,
-            top: 40,
+            top: MediaQuery.of(context).size.height/250.0,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               // mainAxisAlignment: MainAxisAlignment.end,
