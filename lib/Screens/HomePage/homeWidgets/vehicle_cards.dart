@@ -83,7 +83,9 @@ class _VehicleCardsState extends State<VehicleCards> {
           ),
         ),
         Padding(
-          padding: EdgeInsets.only(left: 45.0, top: 170.0),
+          padding: EdgeInsets.only(left: 45.0, 
+                                    top: MediaQuery.of(context).size.height / 3.9,
+                                    ),
           child: GestureDetector(
                  onTap: onTap,
                   child: Container(
