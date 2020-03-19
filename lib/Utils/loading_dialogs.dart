@@ -1,19 +1,21 @@
+import 'package:autoassit/Screens/Login/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:autoassit/Screens/HomePage/home.dart';
 import 'dart:async';
 import 'package:autoassit/Screens/Login/pincode_verify.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class SettingUpScreen extends StatefulWidget {
+class LoggingOut extends StatefulWidget {
 
-  SettingUpScreen(
+  LoggingOut(
       {Key key})
       : super(key: key);
 
   @override
-  _SettingUpScreenState createState() => _SettingUpScreenState();
+  _LoggingOutState createState() => _LoggingOutState();
 }
 
-class _SettingUpScreenState extends State<SettingUpScreen> {
+class _LoggingOutState extends State<LoggingOut> {
   @override
   void initState() {
     super.initState();
@@ -29,7 +31,7 @@ class _SettingUpScreenState extends State<SettingUpScreen> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => HomePage(
+            builder: (context) => LoginPage(
             ),
           ),
         );
@@ -50,13 +52,13 @@ class _SettingUpScreenState extends State<SettingUpScreen> {
               width: 200,
               decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage('assets/images/sending.gif'),
+                      image: AssetImage('assets/images/macha.gif'),
                       fit: BoxFit.cover)),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 5.0),
               child: Container(
-                child: Text("Setting up your profile..",
+                child: Text("Logging You Out..",
                     style: TextStyle(
                       fontFamily: 'Montserrat',
                       fontSize: 15,
@@ -83,9 +85,11 @@ class SentScreen extends StatefulWidget {
 }
 
 class _SentScreenState extends State<SentScreen> {
+
   @override
   void initState() {
     super.initState();
+    
     Future.delayed(
       Duration(seconds: 4),
       () {
@@ -144,14 +148,15 @@ class VerifyingScreen extends StatefulWidget {
 
 class _VerifyingScreenState extends State<VerifyingScreen> {
 
+    SharedPreferences login;
 
   @override
   void initState() {
     super.initState();
-    navigate();
+    initializeAuth();
   }
 
-  navigate() {
+  navigateToHome(){
     Future.delayed(
       Duration(seconds: 6),
       () {
@@ -164,6 +169,17 @@ class _VerifyingScreenState extends State<VerifyingScreen> {
         );
       },
     );
+  }
+
+  void initializeAuth() async {
+    SharedPreferences login = await SharedPreferences.getInstance();
+    final _token = login.getString("gettoken");
+    print("token = "+ _token);
+
+    SharedPreferences initializeToken = await SharedPreferences.getInstance();
+    initializeToken.setString("authtoken", _token);
+
+    navigateToHome();
   }
 
   @override
