@@ -1,7 +1,7 @@
-import 'dart:developer';
 import 'dart:io';
 import 'package:autoassit/Screens/HomePage/homeWidgets/service_cards.dart';
 import 'package:autoassit/Screens/HomePage/homeWidgets/vehicle_cards.dart';
+import 'package:autoassit/Utils/loading_dialogs.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:connection_status_bar/connection_status_bar.dart';
 import 'package:flutter/foundation.dart';
@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:autoassit/Screens/HomePage/homeWidgets/customer_cards.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:autoassit/Screens/HomePage/homeWidgets/utils.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
@@ -223,7 +224,9 @@ class _HomePageState extends State<HomePage>
       children: <Widget>[
         _buildWelcomeMsg(context),
         FloatingActionButton(
-            onPressed: () {},
+            onPressed: () {
+              logOut();
+            },
             backgroundColor: Colors.grey.withOpacity(0.3),
             mini: true,
             elevation: 0.0,
@@ -234,6 +237,15 @@ class _HomePageState extends State<HomePage>
       ],
     );
   }
+
+  logOut() async {
+    SharedPreferences initializeToken = await SharedPreferences.getInstance();
+    initializeToken.remove("authtoken");
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (BuildContext ctx) =>  LoggingOut()));
+  }
+
+
     Future<bool> _onBackPressed() {
     return AwesomeDialog(
             context: context,
