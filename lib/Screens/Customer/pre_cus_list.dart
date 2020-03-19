@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:autoassit/Screens/Vehicle/addVehicle.dart';
 import 'package:flutter/material.dart';
 import 'package:autoassit/Models/customerModel.dart';
@@ -28,17 +27,15 @@ class Debouncer {
 }
 
 class _PreCustomerListState extends State<PreCustomerList> {
-
   final _debouncer = Debouncer(milliseconds: 500);
   List<Customer> customer = List();
   List<Customer> filteredCustomers = List();
 
   // List _selectedIndexs = [];
   final _search = TextEditingController();
-   bool isSearchFocused = false;
+  bool isSearchFocused = false;
 
-
-     @override
+  @override
   void initState() {
     super.initState();
     GetCustomerService.getCustomers().then((customersFromServer) {
@@ -52,27 +49,23 @@ class _PreCustomerListState extends State<PreCustomerList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false, // this avoids the overflow error
-      resizeToAvoidBottomInset: true,
-      appBar: _buildTopAppbar(context),
-      body:GestureDetector(
-        onTap: () {
+        resizeToAvoidBottomPadding: false, // this avoids the overflow error
+        resizeToAvoidBottomInset: true,
+        appBar: _buildTopAppbar(context),
+        body: GestureDetector(
+          onTap: () {
             FocusScope.of(context).requestFocus(FocusNode());
           },
           child: _buildBody(context),
-
-      ) 
-      
-      
-    );
+        ));
   }
 
-   Widget _buildTopAppbar(BuildContext context) {
+  Widget _buildTopAppbar(BuildContext context) {
     return PreferredSize(
       preferredSize: Size.fromHeight(190.0),
       child: Container(
         color: Colors.transparent,
-        height: MediaQuery.of(context).size.height/0.5,
+        height: MediaQuery.of(context).size.height / 0.5,
         alignment: Alignment.center,
         child: _buildStack(context),
       ),
@@ -104,14 +97,14 @@ class _PreCustomerListState extends State<PreCustomerList> {
                 Center(
                     child: Image.asset(
                   "assets/images/personas.png",
-                  width: 150,
+                  width: 140,
                   height: 100,
                 )),
                 Padding(
-                  padding: const EdgeInsets.only(left: 30.0),
+                  padding: const EdgeInsets.only(left: 20.0),
                   child: Center(
                     child: Text(
-                      'Customer   \n      List.. ',
+                      'Select a \ncustomer 1st',
                       style: TextStyle(
                           textBaseline: TextBaseline.alphabetic,
                           fontFamily: 'Montserrat',
@@ -174,13 +167,19 @@ class _PreCustomerListState extends State<PreCustomerList> {
     );
   }
 
-   Widget _buildBody(BuildContext context) {
+  Widget _buildBody(BuildContext context) {
     return Center(
-          child: ListView.builder(
+      child: ListView.builder(
         scrollDirection: Axis.vertical,
         itemBuilder: (context, index) {
           return Container(
-             child: _goToVehicleList(index,'assets/images/personas.png',filteredCustomers[index].fName +" "+ filteredCustomers[index].lName,filteredCustomers[index].cusid,filteredCustomers),
+            child: _getCustomerList(index,
+                                    'assets/images/cus_avatar.png',
+                                    filteredCustomers[index].fName +
+                                    " " +
+                                    filteredCustomers[index].lName,
+                                    filteredCustomers[index].cusid,
+                                    filteredCustomers),
           );
         },
         itemCount: filteredCustomers.length,
@@ -188,26 +187,24 @@ class _PreCustomerListState extends State<PreCustomerList> {
     );
   }
 
-  Widget _goToVehicleList(index,String imgPath,cusName,phone,filteredCustomers) {
+  Widget _getCustomerList(index, String imgPath, cusName, phone, filteredCustomers) {
+
     return Padding(
       padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
       child: GestureDetector(
         onTap: () {
-          print("vehicle list opened");
-          print(filteredCustomers[index].cusid);
-          final customer_id = filteredCustomers[index].cusid;
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => AddVehicle(customer_id:customer_id)));
+          _navigateToVehicleRegistration(index);
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Container(
                 child: Row(children: [
-              Image.asset(imgPath,
-                   height: 60.0,
-                   width: 60.0,
-                  ),
+              Image.asset(
+                imgPath,
+                height: 60.0,
+                width: 60.0,
+              ),
               SizedBox(width: 10.0),
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Padding(
@@ -231,19 +228,30 @@ class _PreCustomerListState extends State<PreCustomerList> {
               ])
             ])),
             IconButton(
-              icon: Icon(Icons.keyboard_arrow_right),
+              icon: Icon(Icons.add_circle_outline),
               color: Colors.black,
               onPressed: () {
-                print("vehicle list opened");
-                print(filteredCustomers[index].cusid);
-                final customer_id = filteredCustomers[index].cusid;
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => AddVehicle(customer_id:customer_id)));
+
+                _navigateToVehicleRegistration(index);
+
               },
             )
           ],
         ),
       ),
     );
+  }
+
+  _navigateToVehicleRegistration(index) {
+
+    final customer_id = filteredCustomers[index].cusid;
+    final customer_name = filteredCustomers[index].fName +" "+ filteredCustomers[index].lName;
+
+    print(customer_id +"\n"+ customer_name);
+
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => AddVehicle(
+                                     customer_id: customer_id,
+                                     customer_name: customer_name)));
   }
 }

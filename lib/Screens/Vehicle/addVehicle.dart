@@ -1,11 +1,13 @@
 import 'dart:io';
 import 'package:autoassit/Controllers/ApiServices/Vehicle_Services/addVehicle_Service.dart';
+import 'package:autoassit/Screens/Vehicle/view_vehicle.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 
 class AddVehicle extends StatefulWidget {
   final customer_id;
-  AddVehicle({Key key,this.customer_id}) : super(key: key);
+  final customer_name;
+  AddVehicle({Key key,this.customer_id,this.customer_name}) : super(key: key);
 
   @override
   _AddVehicleState createState() => _AddVehicleState();
@@ -26,6 +28,7 @@ class _AddVehicleState extends State<AddVehicle> {
     super.initState();
 
     print("customer id = "+widget.customer_id);
+     print("customer name = "+widget.customer_name);
   }
 
   @override
@@ -312,7 +315,7 @@ class _AddVehicleState extends State<AddVehicle> {
     return GestureDetector(
       onTap: () {
         if (checkNull()) {
-            postUserData();
+            postVehicleData();
         } else {
           errorDialog('ERROR', 'You should fill all the fields !');
           print("empty fields");
@@ -355,12 +358,16 @@ class _AddVehicleState extends State<AddVehicle> {
             animType: AnimType.TOPSLIDE,
             tittle: title,
             desc: dec,
-            // btnCancelOnPress: () {},
-            btnOkOnPress: () {})
+            btnOkText: 'Goto VehicleList !',
+            btnCancelOnPress: () {},
+            btnOkOnPress: () {
+             Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => ViewVehicle()));
+            })
         .show();
   }
 
-  postUserData() {
+  postVehicleData() {
     final body = {
       "vnumber": _vNumber.text,
       "make": _vMake.text,
@@ -369,7 +376,8 @@ class _AddVehicleState extends State<AddVehicle> {
       "odo": _vODO.text,
       "capacity": _vCapacity.text,
       "description": _vDescription.text,
-      "cusID": widget.customer_id
+      "cusID": widget.customer_id,
+      "cusName": widget.customer_name
     };
     RegisterVehicleService.RegisterVehicle(body).then((success) {
       print(success);
