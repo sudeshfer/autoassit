@@ -20,6 +20,8 @@ class _LoginPageState extends State<LoginPage> {
   ProgressDialog pr;
   SharedPreferences login;
 
+  
+
   Future<bool> _onBackPressed() {
     return AwesomeDialog(
             context: context,
@@ -66,6 +68,10 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth  = MediaQuery.of(context).size.width;
+
     pr = new ProgressDialog(context, type: ProgressDialogType.Normal);
 
     pr.style(
@@ -99,58 +105,60 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               children: <Widget>[
                 Container(
-                  height: 300,
+                  height: 320,
                   decoration: BoxDecoration(
                       image: DecorationImage(
                           image: AssetImage('assets/images/background.png'),
                           fit: BoxFit.fill)),
                   child: Stack(
                     children: <Widget>[
-                      Positioned(
-                        left: 30,
-                        width: 80,
-                        height: 200,
+                      // Positioned(
+                      //   left: 30,
+                      //   width: 80,
+                      //   height: 200,
+                      //   child: Container(
+                      //     decoration: BoxDecoration(
+                      //         image: DecorationImage(
+                      //             image:
+                      //                 AssetImage('assets/images/light-1.png'))),
+                      //   ),
+                      // ),
+                      Align(
+                        alignment: Alignment.topCenter,
                         child: Container(
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image:
-                                      AssetImage('assets/images/light-1.png'))),
+                          // left: 140,
+                          margin: EdgeInsets.only(top:50),
+                          width:  MediaQuery.of(context).size.width /0.2,
+                          height: 400,
+                          child: Container(
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: AssetImage(
+                                        'assets/images/loginbg.gif'))),
+                          ),
                         ),
                       ),
-                      Positioned(
-                        left: 140,
-                        width: 80,
-                        height: 150,
-                        child: Container(
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image:
-                                      AssetImage('assets/images/light-2.png'))),
-                        ),
-                      ),
-                      Positioned(
-                        right: 40,
-                        top: 40,
-                        width: 80,
-                        height: 150,
-                        child: Container(
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image:
-                                      AssetImage('assets/images/clock.png'))),
-                        ),
-                      ),
-                      Positioned(
-                        child: Container(
-                          margin: EdgeInsets.only(top: 50),
-                          child: Center(
-                            child: Text(
-                              "Login",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 40,
-                                  fontWeight: FontWeight.bold),
-                            ),
+                      // Positioned(
+                      //   right: 40,
+                      //   top: 40,
+                      //   width: 80,
+                      //   height: 150,
+                      //   child: Container(
+                      //     decoration: BoxDecoration(
+                      //         image: DecorationImage(
+                      //             image:
+                      //                 AssetImage('assets/images/clock.png'))),
+                      //   ),
+                      // ),
+                      Container(
+                        margin: EdgeInsets.only(bottom: 100),
+                        child: Center(
+                          child: Text(
+                            "Login",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 40,
+                                fontWeight: FontWeight.bold),
                           ),
                         ),
                       ),
@@ -158,7 +166,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.all(30.0),
+                  padding: EdgeInsets.only(top:20.0,left:30,right:30),
                   child: Column(
                     children: <Widget>[
                       Container(
