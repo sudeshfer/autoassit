@@ -176,12 +176,12 @@ class _ViewCustomerState extends State<ViewCustomer> {
         scrollDirection: Axis.vertical,
         itemBuilder: (context, index) {
           return Container(
-            margin: EdgeInsets.only(left: 10, right: 10, bottom: 20),
+            margin: EdgeInsets.only(left: 8, right: 8, bottom: 20),
             child: SimpleFoldingCell(
                 frontWidget: _buildFrontWidget(index),
                 innerTopWidget: _buildInnerTopWidget(index),
                 innerBottomWidget: _buildInnerBottomWidget(index),
-                cellSize: Size(MediaQuery.of(context).size.width / 0.6,
+                cellSize: Size(MediaQuery.of(context).size.width / 0.4,
                     MediaQuery.of(context).size.height / 4),
                 // padding: EdgeInsets.only(left:25,top: 25,right: 25),
                 animationDuration: Duration(milliseconds: 300),
@@ -202,12 +202,12 @@ class _ViewCustomerState extends State<ViewCustomer> {
             color: Color(0xFFffcd3c),
             alignment: Alignment.center,
             child: Padding(
-              padding: const EdgeInsets.only(left:15.0),
+              padding: const EdgeInsets.only(left: 15.0),
               child: Column(
                 // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   Padding(
-                    padding: const EdgeInsets.only(top:15.0),
+                    padding: const EdgeInsets.only(top: 15.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
@@ -225,34 +225,86 @@ class _ViewCustomerState extends State<ViewCustomer> {
                           ],
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left:8.0,right: 5),
+                          padding: const EdgeInsets.only(left: 8.0, right: 5),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: <Widget>[
-                              Text(
-                                  filteredCustomers[index].fName +
-                                      " " +
-                                      filteredCustomers[index].lName,
-                                  style: TextStyle(
-                                      color: Color(0xFF2e282a),
-                                      fontFamily: 'Montserrat',
-                                      fontSize: 18.0,
-                                      fontWeight: FontWeight.bold)),
-                               Text(
-                          filteredCustomers[index].telephone,
-                          style: TextStyle(
-                              color: Color(0xFF2e282a),
-                              fontFamily: 'OpenSans',
-                              fontSize: 15.0,
-                              fontWeight: FontWeight.w400)),
-                              Text(
-                          filteredCustomers[index].mobile,
-                          style: TextStyle(
-                              color: Color(0xFF2e282a),
-                              fontFamily: 'OpenSans',
-                              fontSize: 15.0,
-                              fontWeight: FontWeight.w400)),        
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width /2,
+                                                              child: Text(
+                                    filteredCustomers[index].fName +
+                                        " " +
+                                        filteredCustomers[index].lName,
+                                        // overflow: TextOverflow.clip,
+                                        softWrap: true,
+                                    style: TextStyle(
+                                        color: Color(0xFF2e282a),
+                                        fontFamily: 'Montserrat',
+                                        fontSize: 20.0,
+                                        fontWeight: FontWeight.w900)),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 5.0),
+                                child: Row(
+                                  children: <Widget>[
+                                    Icon(Icons.phone,
+                                        size: 16, color: Color(0xFFf44336)),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 5.0),
+                                      child: Text(
+                                          filteredCustomers[index].telephone,
+                                          style: TextStyle(
+                                              color: Color(0xFF2e282a),
+                                              fontFamily: 'OpenSans',
+                                              fontSize: 15.0,
+                                              fontWeight: FontWeight.w400)),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 5.0),
+                                child: Row(
+                                  children: <Widget>[
+                                    Icon(Icons.phone_iphone,
+                                        size: 16, color: Color(0xFFf44336)),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 5.0),
+                                      child: Text(
+                                          filteredCustomers[index].mobile,
+                                          style: TextStyle(
+                                              color: Color(0xFF2e282a),
+                                              fontFamily: 'OpenSans',
+                                              fontSize: 15.0,
+                                              fontWeight: FontWeight.w400)),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 5.0),
+                                child: Row(
+                                  children: <Widget>[
+                                    Icon(Icons.email,
+                                        size: 16, color: Color(0xFFf44336)),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 5.0),
+                                      child: SizedBox(
+                                        width: MediaQuery.of(context).size.width / 2.4,
+                                        child: Text(
+                                            filteredCustomers[index].email,
+                                            softWrap: true,
+                                            style: TextStyle(
+                                                color: Color(0xFF2e282a),
+                                                fontFamily: 'OpenSans',
+                                                fontSize: 15.0,
+                                                fontWeight: FontWeight.w400)),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ],
                           ),
                         ),
