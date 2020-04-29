@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 class AddVehicle extends StatefulWidget {
   final customer_id;
   final customer_name;
-  AddVehicle({Key key,this.customer_id,this.customer_name}) : super(key: key);
+  AddVehicle({Key key, this.customer_id, this.customer_name}) : super(key: key);
 
   @override
   _AddVehicleState createState() => _AddVehicleState();
@@ -27,8 +27,8 @@ class _AddVehicleState extends State<AddVehicle> {
     // TODO: implement initState
     super.initState();
 
-    print("customer id = "+widget.customer_id);
-     print("customer name = "+widget.customer_name);
+    print("customer id = " + widget.customer_id);
+    print("customer name = " + widget.customer_name);
   }
 
   @override
@@ -57,7 +57,7 @@ class _AddVehicleState extends State<AddVehicle> {
       preferredSize: Size.fromHeight(130.0),
       child: Container(
         color: Colors.transparent,
-        height: 130.0,
+        height: MediaQuery.of(context).size.height / 6.0,
         alignment: Alignment.center,
         child: _buildStack(context),
       ),
@@ -69,7 +69,7 @@ class _AddVehicleState extends State<AddVehicle> {
       children: <Widget>[
         Positioned(
           child: Container(
-            height: MediaQuery.of(context).size.height - 550.0,
+            height: MediaQuery.of(context).size.height / 4.0,
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
               color: Color(0xFF81C784),
@@ -81,7 +81,7 @@ class _AddVehicleState extends State<AddVehicle> {
         ),
         Positioned(
             left: 10,
-            top: MediaQuery.of(context).size.height/250.0,
+            top: MediaQuery.of(context).size.height / 25.0,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               // mainAxisAlignment: MainAxisAlignment.end,
@@ -116,156 +116,32 @@ class _AddVehicleState extends State<AddVehicle> {
     return Column(
       children: <Widget>[
         Container(
+            decoration: BoxDecoration(
+              color: Colors.amber,
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            margin: const EdgeInsets.only(top: 15),
+            padding: const EdgeInsets.all(5.0),
+            child: Text(
+              "Customer Name - " + widget.customer_name,
+              style: TextStyle(
+                  fontFamily: 'Montserrat',
+                  fontSize: 15.0,
+                  fontWeight: FontWeight.w900),
+            )),
+        Container(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
-          padding: EdgeInsets.only(top: 40),
+          // padding: EdgeInsets.only(top: 20),
           child: Column(
             children: <Widget>[
-              Container(
-                width: MediaQuery.of(context).size.width / 1.2,
-                height: 45,
-                padding:
-                    EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(50)),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(color: Colors.black12, blurRadius: 5)
-                    ]),
-                child: TextField(
-                  controller: _vNumber,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    icon: Icon(
-                      Icons.code,
-                      color: Colors.grey,
-                    ),
-                    hintText: 'Vehicle Number',
-                  ),
-                ),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width / 1.2,
-                height: 45,
-                margin: EdgeInsets.only(top: 32),
-                padding:
-                    EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 2),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(50)),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(color: Colors.black12, blurRadius: 5)
-                    ]),
-                child: TextField(
-                  controller: _vMake,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    icon: Icon(
-                      Icons.branding_watermark,
-                      color: Colors.grey,
-                    ),
-                    hintText: 'Make',
-                  ),
-                ),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width / 1.2,
-                height: 45,
-                margin: EdgeInsets.only(top: 32),
-                padding:
-                    EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 2),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(50)),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(color: Colors.black12, blurRadius: 5)
-                    ]),
-                child: TextField(
-                  controller: _vModel,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    icon: Icon(
-                      Icons.view_module,
-                      color: Colors.grey,
-                    ),
-                    hintText: 'Model',
-                  ),
-                ),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width / 1.2,
-                height: 45,
-                margin: EdgeInsets.only(top: 32),
-                padding:
-                    EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 2),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(50)),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(color: Colors.black12, blurRadius: 5)
-                    ]),
-                child: TextField(
-                  keyboardType: TextInputType.number,
-                  controller: _vMyear,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    icon: Icon(
-                      Icons.calendar_view_day,
-                      color: Colors.grey,
-                    ),
-                    hintText: 'Manufactured Year',
-                  ),
-                ),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width / 1.2,
-                height: 45,
-                margin: EdgeInsets.only(top: 32),
-                padding:
-                    EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 2),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(50)),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(color: Colors.black12, blurRadius: 5)
-                    ]),
-                child: TextField(
-                  keyboardType: TextInputType.number,
-                  controller: _vODO,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    icon: Icon(
-                      Icons.timer,
-                      color: Colors.grey,
-                    ),
-                    hintText: 'ODO (Milage)',
-                  ),
-                ),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width / 1.2,
-                height: 45,
-                margin: EdgeInsets.only(top: 32),
-                padding:
-                    EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 2),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(50)),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(color: Colors.black12, blurRadius: 5)
-                    ]),
-                child: TextField(
-                  controller: _vCapacity,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    icon: Icon(
-                      Icons.tonality,
-                      color: Colors.grey,
-                    ),
-                    hintText: 'Engine Capacity',
-                  ),
-                ),
-              ),
+              buildTextfield(context, 'Vehicle Number', Icons.code, _vNumber),
+              buildTextfield(context, 'Make', Icons.branding_watermark, _vMake),
+              buildTextfield(context, 'Model', Icons.view_module, _vModel),
+              buildTextfield(context, 'Manufactured Year',Icons.calendar_view_day, _vMyear),
+              buildTextfield(context, 'ODO (Milage)', Icons.timer, _vODO),
+              buildTextfield(context, 'Engine Capacity', Icons.tonality, _vCapacity),
+
               Container(
                 width: MediaQuery.of(context).size.width / 1.2,
                 height: 70,
@@ -291,11 +167,36 @@ class _AddVehicleState extends State<AddVehicle> {
                   ),
                 ),
               ),
-              Divider(),
+              // Divider(),
             ],
           ),
         )
       ],
+    );
+  }
+
+  Widget buildTextfield(BuildContext context, String title, IconData icon,
+      TextEditingController controller) {
+    return Container(
+      width: MediaQuery.of(context).size.width / 1.2,
+      height: 45,
+      padding: EdgeInsets.only(left: 16, right: 16, bottom: 4),
+      margin: EdgeInsets.only(top: 32),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(50)),
+          color: Colors.white,
+          boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 5)]),
+      child: TextField(
+        controller: controller,
+        decoration: InputDecoration(
+          border: InputBorder.none,
+          icon: Icon(
+            icon,
+            color: Colors.grey,
+          ),
+          hintText: title,
+        ),
+      ),
     );
   }
 
@@ -315,7 +216,7 @@ class _AddVehicleState extends State<AddVehicle> {
     return GestureDetector(
       onTap: () {
         if (checkNull()) {
-            postVehicleData();
+          postVehicleData();
         } else {
           errorDialog('ERROR', 'You should fill all the fields !');
           print("empty fields");
@@ -353,18 +254,18 @@ class _AddVehicleState extends State<AddVehicle> {
 
   Future<dynamic> successDialog(String title, String dec) {
     return AwesomeDialog(
-            context: context,
-            dialogType: DialogType.SUCCES,
-            animType: AnimType.TOPSLIDE,
-            tittle: title,
-            desc: dec,
-            btnOkText: 'Goto VehicleList !',
-            btnCancelOnPress: () {},
-            btnOkOnPress: () {
-             Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => ViewVehicle()));
-            })
-        .show();
+        context: context,
+        dialogType: DialogType.SUCCES,
+        animType: AnimType.TOPSLIDE,
+        tittle: title,
+        desc: dec,
+        btnOkText: 'Goto VehicleList !',
+        btnCancelText: 'Regsiter Another !',
+        btnCancelOnPress: () {},
+        btnOkOnPress: () {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => ViewVehicle()));
+        }).show();
   }
 
   postVehicleData() {

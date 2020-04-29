@@ -1,6 +1,7 @@
 import 'package:autoassit/Screens/Customer/add_customer.dart';
 import 'package:autoassit/Screens/Customer/pre_cus_list.dart';
 import 'package:autoassit/Screens/Customer/view_customer.dart';
+import 'package:autoassit/Screens/Jobs/create_job.dart';
 import 'package:autoassit/Screens/Login/login_page.dart';
 import 'package:autoassit/Screens/Login/pincode_verify.dart';
 import 'package:autoassit/Screens/HomePage/home.dart';
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
       theme: new ThemeData(primarySwatch: Colors.deepPurple),
       home: new SplashScreen(),
       routes: <String, WidgetBuilder>{
+        
         "/login": (BuildContext context) => new LoginPage(),
         "/pincode": (BuildContext context) => new PincodeVerify(),
         "/home": (BuildContext context) => new HomePage(),
@@ -33,6 +35,7 @@ class MyApp extends StatelessWidget {
         "/viewCustomer": (BuildContext context) => new ViewCustomer(),
         "/viewVehicle": (BuildContext context) => new ViewVehicle(),
         "/preCusList": (BuildContext context) => new PreCustomerList(),
+        "/createJob": (BuildContext context) => new CreateJob(),
 
        
       },

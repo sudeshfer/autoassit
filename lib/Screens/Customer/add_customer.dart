@@ -80,7 +80,7 @@ class _AddCustomerState extends State<AddCustomer> {
       children: <Widget>[
         Positioned(
           child: Container(
-            height: MediaQuery.of(context).size.height - 550.0,
+            height: MediaQuery.of(context).size.height / 4.0,
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
               color: Colors.amber,
@@ -92,7 +92,7 @@ class _AddCustomerState extends State<AddCustomer> {
         ),
         Positioned(
             left: 10,
-            top: MediaQuery.of(context).size.height/250.0,
+            top: MediaQuery.of(context).size.height/25.0,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               // mainAxisAlignment: MainAxisAlignment.end,

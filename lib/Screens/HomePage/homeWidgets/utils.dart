@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 //Sudesh kiyanne ponnayek
 
 class Utils {
   static String getWelcomeMessage() {
     final hour = DateTime.now().hour;
     String msg;
+
+    
     print(hour);
 
     if (hour > 17) {
-      msg = 'Good Evening User !';
+      msg = 'Good Evening !';
     } else if (hour > 11) {
-      msg = 'Good Afternoon User !';
+      msg = 'Good Afternoon !';
     } else
-      msg = 'Good Morning User !';
+      msg = 'Good Morning !';
 
     // if (hour < 12) {
     //   msg = 'Good Morning User !';

@@ -14,8 +14,9 @@ String enteredOtp;
 class PincodeVerify extends StatefulWidget {
 
     final phone;
+    final username;
  
-  PincodeVerify({Key key,this.phone}) : super(key: key);
+  PincodeVerify({Key key,this.phone,this.username}) : super(key: key);
   
   @override
   _PincodeVerifyState createState() => _PincodeVerifyState();
@@ -100,7 +101,9 @@ class _PincodeVerifyState extends State<PincodeVerify> {
       Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => VerifyingScreen(),
+        builder: (context) => VerifyingScreen(
+          username: widget.username,
+        ),
       ),
     );
     

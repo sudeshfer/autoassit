@@ -7,9 +7,11 @@ class Vehicle {
   String odo;
   String eCapacity;
   String desc;
+  String cusid;
+  String cusName;
   
  
-  Vehicle({this.vNumber,this.make,this.model,this.mYear,this.odo,this.eCapacity,this.desc});
+  Vehicle({this.vNumber,this.make,this.model,this.mYear,this.odo,this.eCapacity,this.desc,this.cusid,this.cusName});
  
   factory Vehicle.fromJson(Map<String, dynamic> json) {
     return Vehicle(
@@ -21,6 +23,8 @@ class Vehicle {
       odo: json["odo"] as String,
       eCapacity: json["capacity"] as String,
       desc: json["description"] as String,
+      cusid: json["cusID"] as String,
+      cusName: json["cusName"] as String,
     );
   }
 }

@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:autoassit/Controllers/ApiServices/OtpLoginService.dart';
+import 'package:autoassit/Controllers/ApiServices/auth_services/OtpLoginService.dart';
 import 'package:autoassit/Screens/Login/pincode_verify.dart';
 import 'package:autoassit/Utils/loading_dialogs.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
@@ -38,20 +38,6 @@ class _LoginPageState extends State<LoginPage> {
             }).show() ??
         false;
   }
-
-  // _setUserData() async {
-  //   if (_phone.text != "") {
-  //     final phoneNum = "+94" + _phone.text;
-
-  //     SharedPreferences initiateLogin = await SharedPreferences.getInstance();
-  //     initiateLogin.setString("phoneNumber", phoneNum);
-
-  //     print(phoneNum);
-
-  //     Navigator.of(context)
-  //         .push(MaterialPageRoute(builder: (context) => PincodeVerify()));
-  //   }
-  // }
 
   @override
   void initState() {
@@ -105,24 +91,13 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               children: <Widget>[
                 Container(
-                  height: 320,
+                  height: screenHeight/2,
                   decoration: BoxDecoration(
                       image: DecorationImage(
                           image: AssetImage('assets/images/background.png'),
                           fit: BoxFit.fill)),
                   child: Stack(
                     children: <Widget>[
-                      // Positioned(
-                      //   left: 30,
-                      //   width: 80,
-                      //   height: 200,
-                      //   child: Container(
-                      //     decoration: BoxDecoration(
-                      //         image: DecorationImage(
-                      //             image:
-                      //                 AssetImage('assets/images/light-1.png'))),
-                      //   ),
-                      // ),
                       Align(
                         alignment: Alignment.topCenter,
                         child: Container(
@@ -138,18 +113,6 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                       ),
-                      // Positioned(
-                      //   right: 40,
-                      //   top: 40,
-                      //   width: 80,
-                      //   height: 150,
-                      //   child: Container(
-                      //     decoration: BoxDecoration(
-                      //         image: DecorationImage(
-                      //             image:
-                      //                 AssetImage('assets/images/clock.png'))),
-                      //   ),
-                      // ),
                       Container(
                         margin: EdgeInsets.only(bottom: 100),
                         child: Center(
@@ -289,6 +252,7 @@ class _LoginPageState extends State<LoginPage> {
       if (success) {
         SharedPreferences login = await SharedPreferences.getInstance();
         final _token = login.getString("gettoken");
+        final _usrename = login.getString("username");
         print(_token);
 
         SharedPreferences logininit = await SharedPreferences.getInstance();
@@ -298,6 +262,7 @@ class _LoginPageState extends State<LoginPage> {
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => SentScreen(
                   phone: "+94" + _phone.text,
+                  username: _usrename,
                 )));
       } else {
         pr.hide();

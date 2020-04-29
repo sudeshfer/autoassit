@@ -26,9 +26,11 @@ class LoginwithOtpService {
     if (res_data['loginstatus'] == 'olduser') {
       print(res_data['loginstatus']);
       final _token = res_data['token'];
-      print(_token);
+      final _name = res_data['username'];
+      print(_token + _name);
       SharedPreferences login = await SharedPreferences.getInstance();
       login.setString("gettoken", _token);
+      login.setString("username", _name);
       return true;
     } 
     else 

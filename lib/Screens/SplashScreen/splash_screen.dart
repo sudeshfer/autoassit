@@ -22,12 +22,16 @@ class _SplashScreenState extends State<SplashScreen> {
     checkLoginStatus();
   }
 
-  navigateToHome(){
+  navigateToHome() async {
+    SharedPreferences login = await SharedPreferences.getInstance();
+    final _usrename = login.getString("username");
     Future.delayed(
       Duration(seconds: 5),
       () {
         Navigator.pop(context);
-        Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(),
+        Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(
+          username: _usrename,
+        ),
         ),
         );
       },

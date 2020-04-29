@@ -1,6 +1,10 @@
+import 'package:autoassit/Screens/Jobs/create_job.dart';
 import 'package:flutter/material.dart';
 
 class ServicesList extends StatefulWidget {
+  final username;
+  ServicesList({Key key, this.username}) : super(key: key);
+
   @override
   _ServicesListState createState() => _ServicesListState();
 }
@@ -13,7 +17,6 @@ class _ServicesListState extends State<ServicesList> {
     // TODO: implement initState
     super.initState();
     _scrollController = ScrollController();
-   
   }
 
   @override
@@ -27,13 +30,33 @@ class _ServicesListState extends State<ServicesList> {
             controller: _scrollController,
             scrollDirection: Axis.horizontal,
             children: <Widget>[
-              getServicesCard('assets/images/job.png','create\n  Job', onTap: (){print("Go to add customer screen !");} ),
+              getServicesCard('assets/images/job.png', 'create\n  Job',
+                  onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CreateJob(
+                      username: widget.username,
+                    ),
+                  ),
+                );
+              }),
               SizedBox(width: 15.0),
-              getServicesCard('assets/images/jobrecords.png', '    Job\nRecords', onTap: (){print("Go to view customer screen !");}),
+              getServicesCard(
+                  'assets/images/jobrecords.png', '    Job\nRecords',
+                  onTap: () {
+                print("Go to view customer screen !");
+              }),
               SizedBox(width: 15.0),
-              getServicesCard('assets/images/products.png', 'Products', onTap: (){print("Go to customer history screen !");}),
+              getServicesCard('assets/images/products.png', 'Products',
+                  onTap: () {
+                print("Go to customer history screen !");
+              }),
               SizedBox(width: 15.0),
-              getServicesCard('assets/images/services.png', 'Services', onTap: (){print("Go to customer history screen !");}),
+              getServicesCard('assets/images/services.png', 'Services',
+                  onTap: () {
+                print("Go to customer history screen !");
+              }),
               SizedBox(width: 15.0),
             ],
           ),
@@ -62,36 +85,40 @@ class _ServicesListState extends State<ServicesList> {
                   height: 100.0,
                   width: 120.0,
                 ),
-                
-                    Column(
-                      children: <Widget>[
-                        Text(
-                          cardTitle,
-                          style: TextStyle(
-                              fontFamily: 'Montserrat',
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white),
-                        ),
-                      ],
+                Column(
+                  children: <Widget>[
+                    Text(
+                      cardTitle,
+                      style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white),
                     ),
-                 
+                  ],
+                ),
                 SizedBox(height: 10.0),
               ],
             ),
           ),
         ),
         Padding(
-          padding: EdgeInsets.only(left: 45.0, top: 170.0),
+          padding: EdgeInsets.only(
+              left: 45.0, top: MediaQuery.of(context).size.height / 3.9),
           child: GestureDetector(
-                 onTap: onTap,
-                  child: Container(
+            onTap: onTap,
+            child: Container(
               height: 50.0,
               width: 50.0,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(25.0), color: Color(0xFFef9a9a)),
-              child:
-                  Center(child: Icon(Icons.add_circle, color: Colors.white,size: 30,)),
+                  borderRadius: BorderRadius.circular(25.0),
+                  color: Color(0xFFef9a9a)),
+              child: Center(
+                  child: Icon(
+                Icons.add_circle,
+                color: Colors.white,
+                size: 30,
+              )),
             ),
           ),
         )

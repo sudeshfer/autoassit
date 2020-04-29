@@ -74,10 +74,12 @@ class _LoggingOutState extends State<LoggingOut> {
 
 class SentScreen extends StatefulWidget {
   final  phone;
+  final username;
 
   SentScreen(
       {Key key,
-      this.phone})
+      this.phone,
+      this.username})
       : super(key: key);
 
   @override
@@ -100,6 +102,7 @@ class _SentScreenState extends State<SentScreen> {
           MaterialPageRoute(
             builder: (context) => PincodeVerify(
               phone: phoneNum,
+              username: widget.username
             ),
           ),
         );
@@ -137,9 +140,9 @@ class _SentScreenState extends State<SentScreen> {
 }
 
 class VerifyingScreen extends StatefulWidget {
-
+ final username;
   VerifyingScreen(
-      {Key key})
+      {Key key,this.username})
       : super(key: key);
 
   @override
@@ -156,7 +159,7 @@ class _VerifyingScreenState extends State<VerifyingScreen> {
     initializeAuth();
   }
 
-  navigateToHome(){
+  navigateToHome() async {
     Future.delayed(
       Duration(seconds: 6),
       () {
@@ -164,7 +167,9 @@ class _VerifyingScreenState extends State<VerifyingScreen> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => HomePage(),
+            builder: (context) => HomePage(
+              username: widget.username,
+            ),
           ),
         );
       },

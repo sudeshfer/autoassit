@@ -52,18 +52,15 @@ class _ViewCustomerState extends State<ViewCustomer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false, // this avoids the overflow error
-      resizeToAvoidBottomInset: true,
-      appBar: _buildTopAppbar(context),
-      body:GestureDetector(
-        onTap: () {
+        resizeToAvoidBottomPadding: false, // this avoids the overflow error
+        resizeToAvoidBottomInset: true,
+        appBar: _buildTopAppbar(context),
+        body: GestureDetector(
+          onTap: () {
             FocusScope.of(context).requestFocus(FocusNode());
           },
-         child: _buildBody(context),
-      ) 
-      
-      
-    );
+          child: _buildBody(context),
+        ));
   }
 
   Widget _buildTopAppbar(BuildContext context) {
@@ -71,7 +68,7 @@ class _ViewCustomerState extends State<ViewCustomer> {
       preferredSize: Size.fromHeight(190.0),
       child: Container(
         color: Colors.transparent,
-        height: MediaQuery.of(context).size.height/0.5,
+        height: MediaQuery.of(context).size.height / 0.5,
         alignment: Alignment.center,
         child: _buildStack(context),
       ),
@@ -175,22 +172,22 @@ class _ViewCustomerState extends State<ViewCustomer> {
 
   Widget _buildBody(BuildContext context) {
     return Center(
-          child: ListView.builder(
+      child: ListView.builder(
         scrollDirection: Axis.vertical,
         itemBuilder: (context, index) {
           return Container(
-            margin: EdgeInsets.only(left:30,right:25,bottom: 20),
+            margin: EdgeInsets.only(left: 10, right: 10, bottom: 20),
             child: SimpleFoldingCell(
-              frontWidget: _buildFrontWidget(index),
-              innerTopWidget: _buildInnerTopWidget(index),
-              innerBottomWidget: _buildInnerBottomWidget(index),
-              cellSize: Size(MediaQuery.of(context).size.width-100, 125),
-              // padding: EdgeInsets.only(left:25,top: 25,right: 25),
-              animationDuration: Duration(milliseconds: 300),
-                                borderRadius: 30,
-                                onOpen: () => print('$index cell opened'),
-                                onClose: () => print('$index cell closed')
-            ),
+                frontWidget: _buildFrontWidget(index),
+                innerTopWidget: _buildInnerTopWidget(index),
+                innerBottomWidget: _buildInnerBottomWidget(index),
+                cellSize: Size(MediaQuery.of(context).size.width / 0.6,
+                    MediaQuery.of(context).size.height / 4),
+                // padding: EdgeInsets.only(left:25,top: 25,right: 25),
+                animationDuration: Duration(milliseconds: 300),
+                borderRadius: 30,
+                onOpen: () => print('$index cell opened'),
+                onClose: () => print('$index cell closed')),
           );
         },
         itemCount: filteredCustomers.length,
@@ -204,64 +201,100 @@ class _ViewCustomerState extends State<ViewCustomer> {
         return Container(
             color: Color(0xFFffcd3c),
             alignment: Alignment.center,
-            child: Column(
-              // mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(filteredCustomers[index].fName,
-                    style: TextStyle(
-                        color: Color(0xFF2e282a),
-                        fontFamily: 'OpenSans',
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.w800)),
-                Text(
-                    filteredCustomers[index].telephone +
-                        filteredCustomers[index].mobile,
-                    style: TextStyle(
-                        color: Color(0xFF2e282a),
-                        fontFamily: 'OpenSans',
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.w800)),
-                Text(filteredCustomers[index].role,
-                    style: TextStyle(
-                        color: Color(0xFF2e282a),
-                        fontFamily: 'OpenSans',
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.w800)),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    Container(
-                      child: FlatButton(
-                        onPressed: () {
-                          SimpleFoldingCellState foldingCellState =
-                              context.ancestorStateOfType(
-                                  TypeMatcher<SimpleFoldingCellState>());
-                          foldingCellState?.toggleFold();
-                        },
-                        child: Text(
-                          "View More",
+            child: Padding(
+              padding: const EdgeInsets.only(left:15.0),
+              child: Column(
+                // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(top:15.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Column(
+                          children: <Widget>[
+                            Container(
+                              height: 80,
+                              width: 80,
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: AssetImage(
+                                          'assets/images/cus_avatar.png'),
+                                      fit: BoxFit.cover)),
+                            ),
+                          ],
                         ),
-                        textColor: Colors.white,
-                        color: Colors.indigoAccent,
-                        splashColor: Colors.white.withOpacity(0.5),
-                      ),
-                    ),
-                    Container(
-                      child: FlatButton(
-                        onPressed: () {
-                          print("clicked on history btn");
-                        },
-                        child: Text(
-                          "See History",
+                        Padding(
+                          padding: const EdgeInsets.only(left:8.0,right: 5),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                  filteredCustomers[index].fName +
+                                      " " +
+                                      filteredCustomers[index].lName,
+                                  style: TextStyle(
+                                      color: Color(0xFF2e282a),
+                                      fontFamily: 'Montserrat',
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold)),
+                               Text(
+                          filteredCustomers[index].telephone,
+                          style: TextStyle(
+                              color: Color(0xFF2e282a),
+                              fontFamily: 'OpenSans',
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.w400)),
+                              Text(
+                          filteredCustomers[index].mobile,
+                          style: TextStyle(
+                              color: Color(0xFF2e282a),
+                              fontFamily: 'OpenSans',
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.w400)),        
+                            ],
+                          ),
                         ),
-                        textColor: Colors.white,
-                        color: Colors.indigoAccent,
-                        splashColor: Colors.white.withOpacity(0.5),
-                      ),
+                      ],
                     ),
-                  ],
-                ),
-              ],
+                  ),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  //   children: <Widget>[
+                  //     Container(
+                  //       child: FlatButton(
+                  //         onPressed: () {
+                  //           SimpleFoldingCellState foldingCellState =
+                  //               context.ancestorStateOfType(
+                  //                   TypeMatcher<SimpleFoldingCellState>());
+                  //           foldingCellState?.toggleFold();
+                  //         },
+                  //         child: Text(
+                  //           "View More",
+                  //         ),
+                  //         textColor: Colors.white,
+                  //         color: Colors.indigoAccent,
+                  //         splashColor: Colors.white.withOpacity(0.5),
+                  //       ),
+                  //     ),
+                  //     Container(
+                  //       child: FlatButton(
+                  //         onPressed: () {
+                  //           print("clicked on history btn");
+                  //         },
+                  //         child: Text(
+                  //           "See History",
+                  //         ),
+                  //         textColor: Colors.white,
+                  //         color: Colors.indigoAccent,
+                  //         splashColor: Colors.white.withOpacity(0.5),
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
+                ],
+              ),
             ));
       },
     );
@@ -302,9 +335,8 @@ class _ViewCustomerState extends State<ViewCustomer> {
             alignment: Alignment.bottomCenter,
             child: FlatButton(
               onPressed: () {
-                SimpleFoldingCellState foldingCellState =
-                    context.ancestorStateOfType(
-                        TypeMatcher<SimpleFoldingCellState>());
+                SimpleFoldingCellState foldingCellState = context
+                    .ancestorStateOfType(TypeMatcher<SimpleFoldingCellState>());
                 foldingCellState?.toggleFold();
               },
               child: Text(

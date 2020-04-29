@@ -12,7 +12,8 @@ import 'package:autoassit/Screens/HomePage/homeWidgets/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({Key key, this.title}) : super(key: key);
+  final username;
+  HomePage({Key key, this.title,this.username}) : super(key: key);
 
   final String title;
 
@@ -24,23 +25,29 @@ class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   TabController tabController;
   String welcome_msg;
+  String username;
 
   @override
-  void initState() {
+  Future<void> initState() {
     // TODO: implement initState
     tabController = TabController(vsync: this, length: 4);
     welcome_msg = Utils.getWelcomeMessage();
+
+    print(widget.username);
 
     super.initState();
   }
 
   Widget build(BuildContext context) {
+  final screenHeight = MediaQuery.of(context).size.height;
+  final screenWidth  = MediaQuery.of(context).size.width;
+
     return new WillPopScope(
       onWillPop: _onBackPressed,
       child: new Scaffold(
           body: Column(
         children: <Widget>[
-          SizedBox(height: 25.0),
+          SizedBox(height: screenHeight/14),
           Container(
               width: MediaQuery.of(context).size.width,
               padding: EdgeInsets.only(right: 10.0),
@@ -176,7 +183,7 @@ class _HomePageState extends State<HomePage>
                 children: <Widget>[
                   CustomerList(),
                   VehicleCards(),
-                  ServicesList(),
+                  ServicesList(username: widget.username),
                   CustomerList(),
                 ],
               );
@@ -209,7 +216,7 @@ class _HomePageState extends State<HomePage>
       margin: const EdgeInsets.only(left: 20.0),
       padding: const EdgeInsets.all(5.0),
       child: Text(
-        welcome_msg,
+        welcome_msg+ "\n"+ widget.username,
         style: TextStyle(
             fontFamily: 'Montserrat',
             fontSize: 15.0,
