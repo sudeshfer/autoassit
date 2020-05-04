@@ -1,15 +1,17 @@
 import 'dart:async';
-import 'package:autoassit/Screens/Vehicle/addVehicle.dart';
+
+import 'package:autoassit/Controllers/ApiServices/vehicle_services/getVehicles_service.dart';
+import 'package:autoassit/Models/vehicleModel.dart';
+import 'package:autoassit/Screens/Jobs/create_job.dart';
 import 'package:autoassit/Utils/pre_loader.dart';
 import 'package:flutter/material.dart';
-import 'package:autoassit/Models/customerModel.dart';
-import 'package:autoassit/Controllers/ApiServices/Customer_Services/getCustomers_Service.dart';
 
-class PreCustomerList extends StatefulWidget {
-  PreCustomerList({Key key}) : super(key: key);
+class PreVehicleList extends StatefulWidget {
+  final username;
+  PreVehicleList({Key key,this.username}) : super(key: key);
 
   @override
-  _PreCustomerListState createState() => _PreCustomerListState();
+  _PreVehicleListState createState() => _PreVehicleListState();
 }
 
 class Debouncer {
@@ -27,23 +29,23 @@ class Debouncer {
   }
 }
 
-class _PreCustomerListState extends State<PreCustomerList> {
+class _PreVehicleListState extends State<PreVehicleList> {
   final _debouncer = Debouncer(milliseconds: 500);
-  List<Customer> customer = List();
-  List<Customer> filteredCustomers = List();
+  List<Vehicle> vehicle = List();
+  List<Vehicle> filteredVehicles = List();
 
   // List _selectedIndexs = [];
   final _search = TextEditingController();
   bool isSearchFocused = false;
   bool isfetched = true;
 
-  @override
+    @override
   void initState() {
     super.initState();
-    GetCustomerService.getCustomers().then((customersFromServer) {
+    GetVehicleService.getVehicles().then((vehiclesFromServer) {
       setState(() {
-        customer = customersFromServer;
-        filteredCustomers = customer;
+        vehicle = vehiclesFromServer;
+        filteredVehicles = vehicle;
         isfetched = false;
       });
     });
@@ -59,7 +61,7 @@ class _PreCustomerListState extends State<PreCustomerList> {
           onTap: () {
             FocusScope.of(context).requestFocus(FocusNode());
           },
-          child: isfetched? PreLoader() :_buildBody(context),
+          child: isfetched? PreLoader():_buildBody(context),
         ));
   }
 
@@ -99,7 +101,7 @@ class _PreCustomerListState extends State<PreCustomerList> {
               children: <Widget>[
                 Center(
                     child: Image.asset(
-                  "assets/images/personas.png",
+                  "assets/images/view.png",
                   width: 140,
                   height: 100,
                 )),
@@ -107,7 +109,7 @@ class _PreCustomerListState extends State<PreCustomerList> {
                   padding: const EdgeInsets.only(left: 20.0),
                   child: Center(
                     child: Text(
-                      'Select a \ncustomer 1st',
+                      'Select a \nVehicle First',
                       style: TextStyle(
                           textBaseline: TextBaseline.alphabetic,
                           fontFamily: 'Montserrat',
@@ -128,7 +130,7 @@ class _PreCustomerListState extends State<PreCustomerList> {
     );
   }
 
-  Widget _buildSearchBar(BuildContext context) {
+   Widget _buildSearchBar(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(right: 30.0),
       width: MediaQuery.of(context).size.width / 1.4,
@@ -150,9 +152,9 @@ class _PreCustomerListState extends State<PreCustomerList> {
         onChanged: (string) {
           _debouncer.run(() {
             setState(() {
-              filteredCustomers = customer
+              filteredVehicles = vehicle
                   .where((u) =>
-                      (u.fName.toLowerCase().contains(string.toLowerCase())))
+                      (u.vNumber.toLowerCase().contains(string.toLowerCase())))
                   .toList();
             });
           });
@@ -176,27 +178,27 @@ class _PreCustomerListState extends State<PreCustomerList> {
         scrollDirection: Axis.vertical,
         itemBuilder: (context, index) {
           return Container(
-            child: _getCustomerList(index,
-                                    'assets/images/cus_avatar.png',
-                                    filteredCustomers[index].fName +
+            child: _getVehiclesList(index,
+                                    'assets/images/owned.png',
+                                    filteredVehicles[index].make +
                                     " " +
-                                    filteredCustomers[index].lName,
-                                    filteredCustomers[index].cusid,
-                                    filteredCustomers),
+                                    filteredVehicles[index].model,
+                                    filteredVehicles[index].vNumber,
+                                    filteredVehicles),
           );
         },
-        itemCount: filteredCustomers.length,
+        itemCount: filteredVehicles.length,
       ),
     );
   }
 
-  Widget _getCustomerList(index, String imgPath, cusName, phone, filteredCustomers) {
+    Widget _getVehiclesList(index, String imgPath, vehiName, vNumber, filteredVehicles) {
 
     return Padding(
       padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
       child: GestureDetector(
         onTap: () {
-          _navigateToVehicleRegistration(index);
+          _navigateToJobScreen(index);
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -212,7 +214,7 @@ class _PreCustomerListState extends State<PreCustomerList> {
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Padding(
                   padding: const EdgeInsets.only(left: 15.0),
-                  child: Text(cusName,
+                  child: Text(vehiName,
                       style: TextStyle(
                           fontFamily: 'Montserrat',
                           fontSize: 17.0,
@@ -221,7 +223,7 @@ class _PreCustomerListState extends State<PreCustomerList> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 15.0),
-                  child: Text(phone,
+                  child: Text(vNumber,
                       style: TextStyle(
                         fontFamily: 'Montserrat',
                         fontSize: 15.0,
@@ -235,7 +237,7 @@ class _PreCustomerListState extends State<PreCustomerList> {
               color: Colors.black,
               onPressed: () {
 
-                _navigateToVehicleRegistration(index);
+                _navigateToJobScreen(index);
 
               },
             )
@@ -245,16 +247,19 @@ class _PreCustomerListState extends State<PreCustomerList> {
     );
   }
 
-  _navigateToVehicleRegistration(index) {
+  _navigateToJobScreen(index) {
 
-    final customer_id = filteredCustomers[index].cusid;
-    final customer_name = filteredCustomers[index].fName +" "+ filteredCustomers[index].lName;
+    final vnumber = filteredVehicles[index].vNumber;
+    final vehicle_name = filteredVehicles[index].make +" "+ filteredVehicles[index].model;
+    final customer_name = filteredVehicles[index].cusName;
 
-    print(customer_id +"\n"+ customer_name);
+    print(vehicle_name +"\n"+ vnumber);
 
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => AddVehicle(
-                                     customer_id: customer_id,
-                                     customer_name: customer_name)));
+        builder: (context) => CreateJob(
+                                     username: widget.username,
+                                     vnumber: vnumber,
+                                     vehicle_name: vehicle_name,
+                                     customer_name: customer_name,)));
   }
 }

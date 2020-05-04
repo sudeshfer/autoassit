@@ -1,4 +1,4 @@
-import 'package:autoassit/Screens/Jobs/create_job.dart';
+import 'package:autoassit/Screens/Vehicle/pre_vehi_list.dart';
 import 'package:flutter/material.dart';
 
 class ServicesList extends StatefulWidget {
@@ -35,7 +35,7 @@ class _ServicesListState extends State<ServicesList> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => CreateJob(
+                    builder: (context) => PreVehicleList(
                       username: widget.username,
                     ),
                   ),

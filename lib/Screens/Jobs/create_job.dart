@@ -5,7 +5,10 @@ import 'package:autoassit/Screens/Jobs/Widgets/utils.dart';
 
 class CreateJob extends StatefulWidget {
    final username;
-  CreateJob({Key key,this.username}) : super(key: key);
+   final vnumber;
+   final vehicle_name;
+   final customer_name;
+  CreateJob({Key key,this.username,this.vnumber,this.vehicle_name,this.customer_name}) : super(key: key);
 
   @override
   _CreateJobState createState() => _CreateJobState();
@@ -75,9 +78,11 @@ class _CreateJobState extends State<CreateJob> {
                fontFamily: 'Montserrat',
              ),),
              _buildFields('Date - '+ currentDate),
-             _buildFields('Vehicle No - '),
+             _buildFields('Vehicle No - ' + widget.vnumber),
+             _buildFields('Vehicle Name - ' + widget.vehicle_name),
+             _buildFields('Customer Name - ' + widget.customer_name),
              _buildFields('Supervisor Name - ' + widget.username),
-             _buildFields('Customer Name - '),
+             
              
            ],
          ),

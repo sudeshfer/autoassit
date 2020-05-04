@@ -1,8 +1,13 @@
 import 'dart:async';
+import 'package:autoassit/Screens/Customer/Widgets/edit_csutomer.dart';
+import 'package:autoassit/Screens/Customer/owned_vehicles.dart';
+import 'package:autoassit/Screens/Vehicle/addVehicle.dart';
+import 'package:autoassit/Utils/pre_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:autoassit/Models/customerModel.dart';
 import 'package:autoassit/Controllers/ApiServices/Customer_Services/getCustomers_Service.dart';
 import 'package:folding_cell/folding_cell/widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ViewCustomer extends StatefulWidget {
   ViewCustomer({Key key}) : super(key: key);
@@ -36,6 +41,7 @@ class _ViewCustomerState extends State<ViewCustomer> {
 
   bool isClicked = false;
   bool isSearchFocused = false;
+  bool isfetched = true;
   String isExpanded = "";
 
   @override
@@ -45,6 +51,7 @@ class _ViewCustomerState extends State<ViewCustomer> {
       setState(() {
         customer = customersFromServer;
         filteredCustomers = customer;
+        isfetched = false;
       });
     });
   }
@@ -59,7 +66,7 @@ class _ViewCustomerState extends State<ViewCustomer> {
           onTap: () {
             FocusScope.of(context).requestFocus(FocusNode());
           },
-          child: _buildBody(context),
+          child: isfetched? PreLoader() :_buildBody(context),
         ));
   }
 
@@ -182,7 +189,7 @@ class _ViewCustomerState extends State<ViewCustomer> {
                 innerTopWidget: _buildInnerTopWidget(index),
                 innerBottomWidget: _buildInnerBottomWidget(index),
                 cellSize: Size(MediaQuery.of(context).size.width / 0.4,
-                    MediaQuery.of(context).size.height / 4),
+                    MediaQuery.of(context).size.height / 3.8),
                 // padding: EdgeInsets.only(left:25,top: 25,right: 25),
                 animationDuration: Duration(milliseconds: 300),
                 borderRadius: 30,
@@ -231,37 +238,18 @@ class _ViewCustomerState extends State<ViewCustomer> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: <Widget>[
                               SizedBox(
-                                width: MediaQuery.of(context).size.width /2,
-                                                              child: Text(
+                                width: MediaQuery.of(context).size.width / 2,
+                                child: Text(
                                     filteredCustomers[index].fName +
                                         " " +
                                         filteredCustomers[index].lName,
-                                        // overflow: TextOverflow.clip,
-                                        softWrap: true,
+                                    // overflow: TextOverflow.clip,
+                                    softWrap: true,
                                     style: TextStyle(
                                         color: Color(0xFF2e282a),
                                         fontFamily: 'Montserrat',
                                         fontSize: 20.0,
                                         fontWeight: FontWeight.w900)),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 5.0),
-                                child: Row(
-                                  children: <Widget>[
-                                    Icon(Icons.phone,
-                                        size: 16, color: Color(0xFFf44336)),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 5.0),
-                                      child: Text(
-                                          filteredCustomers[index].telephone,
-                                          style: TextStyle(
-                                              color: Color(0xFF2e282a),
-                                              fontFamily: 'OpenSans',
-                                              fontSize: 15.0,
-                                              fontWeight: FontWeight.w400)),
-                                    ),
-                                  ],
-                                ),
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(top: 5.0),
@@ -291,7 +279,9 @@ class _ViewCustomerState extends State<ViewCustomer> {
                                     Padding(
                                       padding: const EdgeInsets.only(left: 5.0),
                                       child: SizedBox(
-                                        width: MediaQuery.of(context).size.width / 2.4,
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                2.4,
                                         child: Text(
                                             filteredCustomers[index].email,
                                             softWrap: true,
@@ -311,40 +301,87 @@ class _ViewCustomerState extends State<ViewCustomer> {
                       ],
                     ),
                   ),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  //   children: <Widget>[
-                  //     Container(
-                  //       child: FlatButton(
-                  //         onPressed: () {
-                  //           SimpleFoldingCellState foldingCellState =
-                  //               context.ancestorStateOfType(
-                  //                   TypeMatcher<SimpleFoldingCellState>());
-                  //           foldingCellState?.toggleFold();
-                  //         },
-                  //         child: Text(
-                  //           "View More",
-                  //         ),
-                  //         textColor: Colors.white,
-                  //         color: Colors.indigoAccent,
-                  //         splashColor: Colors.white.withOpacity(0.5),
-                  //       ),
-                  //     ),
-                  //     Container(
-                  //       child: FlatButton(
-                  //         onPressed: () {
-                  //           print("clicked on history btn");
-                  //         },
-                  //         child: Text(
-                  //           "See History",
-                  //         ),
-                  //         textColor: Colors.white,
-                  //         color: Colors.indigoAccent,
-                  //         splashColor: Colors.white.withOpacity(0.5),
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        top: 10.0, bottom: 10, left: 3, right: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                          ),
+                          child: FlatButton(
+                            onPressed: () {
+                              print("clicked on attach btn");
+                              final cusId = filteredCustomers[index].cusid;
+                              final cusName = filteredCustomers[index].fName +
+                                  " " +
+                                  filteredCustomers[index].lName;
+
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => AddVehicle(
+                                        customer_id: cusId,
+                                        customer_name: cusName,
+                                      )));
+                            },
+                            child: Text(
+                              "Attach Vehicle",
+                            ),
+                            textColor: Colors.white,
+                            color: Colors.indigoAccent,
+                            splashColor: Colors.white.withOpacity(0.5),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            SimpleFoldingCellState foldingCellState =
+                                context.ancestorStateOfType(
+                                    TypeMatcher<SimpleFoldingCellState>());
+                            foldingCellState?.toggleFold();
+                          },
+                          child: Container(
+                              height: 40,
+                              width: 40,
+                              margin: const EdgeInsets.only(top: 5),
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: AssetImage(
+                                          'assets/images/arrowdown.png'),
+                                      fit: BoxFit.cover))),
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                          ),
+                          child: FlatButton(
+                            onPressed: () async {
+                              final cusId = filteredCustomers[index].cusid;
+                              final cusName = filteredCustomers[index].fName +
+                                  " " +
+                                  filteredCustomers[index].lName;
+
+                              SharedPreferences ownedVehi =
+                                  await SharedPreferences.getInstance();
+                              ownedVehi.setString("cusId", cusId);
+
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => OwnedVehicles(
+                                        customer_id: cusId,
+                                        customer_name: cusName,
+                                      )));
+                            },
+                            child: Text(
+                              "Owned Vehicles",
+                            ),
+                            textColor: Colors.white,
+                            color: Colors.indigoAccent,
+                            splashColor: Colors.white.withOpacity(0.5),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ));
@@ -354,66 +391,150 @@ class _ViewCustomerState extends State<ViewCustomer> {
 
   Widget _buildInnerTopWidget(index) {
     return Container(
-        color: Color(0xFFff9234),
+        color: Color(0xFF66BB6A),
         alignment: Alignment.center,
-        child: Text(filteredCustomers[index].email,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(top: 7.0,right: 5),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  buildInnerFields(index, Icons.phone, "Telephone :",
+                      filteredCustomers[index].telephone),
+                  buildInnerFields(index, Icons.code, "Adress L1 :",
+                      filteredCustomers[index].adL1),
+                  buildInnerFields(index, Icons.streetview, "Adress L2 :",
+                      filteredCustomers[index].adL2),
+                  buildInnerFields(index, Icons.location_city, "Adress L3 :",
+                      filteredCustomers[index].adL3),
+                  buildInnerFields(index, Icons.supervised_user_circle,
+                      "User Role :", filteredCustomers[index].role),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 0.0),
+              child: Container(
+                margin: EdgeInsets.only(right:5),
+                height: MediaQuery.of(context).size.height/6,
+                width: MediaQuery.of(context).size.width/5.3,
+                decoration: BoxDecoration(
+                    color: Color(0xFFffcd3c), shape: BoxShape.circle),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text("Credit Limit"),
+                    Text(filteredCustomers[index].cLimit,
+                        style: TextStyle(
+                            color: Color(0xFFef5350),
+                            fontFamily: 'OpenSans',
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.w600)),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ));
+  }
+
+  Padding buildInnerFields(index, IconData icon, String title, String data) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 10.0, left: 25),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          Icon(icon, size: 18, color: Color(0xFFFB8C00)),
+          Text(
+            title,
             style: TextStyle(
-                color: Color(0xFF2e282a),
-                fontFamily: 'OpenSans',
-                fontSize: 15.0,
-                fontWeight: FontWeight.w800)));
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.w600),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0),
+            child: Text(data,
+                style: TextStyle(
+                    color: Color(0xFF2e282a),
+                    fontFamily: 'OpenSans',
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w600)),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _buildInnerBottomWidget(index) {
     return Builder(builder: (context) {
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          Container(
-            alignment: Alignment.bottomCenter,
-            child: FlatButton(
-              onPressed: () {
-                print("clicked edit btn");
-              },
-              child: Text(
-                "Edit",
+      return Container(
+        color: Color(0xFFe57373),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Container(
+              alignment: Alignment.bottomCenter,
+              child: FlatButton(
+                onPressed: () {
+                  print("clicked edit btn");
+                  showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (BuildContext context) {
+                        return Dialog(
+                           child: EditCustomer(fname: filteredCustomers[index].fName,
+                                               lname: filteredCustomers[index].lName,
+                                               email: filteredCustomers[index].email),
+                           shape: RoundedRectangleBorder(
+                             borderRadius: BorderRadius.all(Radius.circular(12))
+                           ),
+                        );
+                      }
+                    );
+                },
+                child: Text(
+                  "Edit Details",
+                ),
+                textColor: Colors.white,
+                color: Colors.indigoAccent,
+                splashColor: Colors.white.withOpacity(0.5),
               ),
-              textColor: Colors.white,
-              color: Colors.indigoAccent,
-              splashColor: Colors.white.withOpacity(0.5),
             ),
-          ),
-          Container(
-            alignment: Alignment.bottomCenter,
-            child: FlatButton(
-              onPressed: () {
-                SimpleFoldingCellState foldingCellState = context
-                    .ancestorStateOfType(TypeMatcher<SimpleFoldingCellState>());
-                foldingCellState?.toggleFold();
-              },
-              child: Text(
-                "Close",
+            Container(
+              alignment: Alignment.bottomCenter,
+              child: FlatButton(
+                onPressed: () {
+                  SimpleFoldingCellState foldingCellState = context
+                      .ancestorStateOfType(TypeMatcher<SimpleFoldingCellState>());
+                  foldingCellState?.toggleFold();
+                },
+                child: Text(
+                  "Close Card",
+                ),
+                textColor: Colors.white,
+                color: Colors.indigoAccent,
+                splashColor: Colors.white.withOpacity(0.5),
               ),
-              textColor: Colors.white,
-              color: Colors.indigoAccent,
-              splashColor: Colors.white.withOpacity(0.5),
             ),
-          ),
-          Container(
-            alignment: Alignment.bottomCenter,
-            child: FlatButton(
-              onPressed: () {
-                print("clicked delete btn");
-              },
-              child: Text(
-                "Delete",
+            Container(
+              alignment: Alignment.bottomCenter,
+              child: FlatButton(
+                onPressed: () {
+                  print("clicked delete btn");
+                },
+                child: Text(
+                  "Delete Customer",
+                ),
+                textColor: Colors.white,
+                color: Colors.indigoAccent,
+                splashColor: Colors.white.withOpacity(0.5),
               ),
-              textColor: Colors.white,
-              color: Colors.indigoAccent,
-              splashColor: Colors.white.withOpacity(0.5),
             ),
-          ),
-        ],
+          ],
+        ),
       );
     });
   }

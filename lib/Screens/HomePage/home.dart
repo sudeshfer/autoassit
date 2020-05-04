@@ -182,7 +182,7 @@ class _HomePageState extends State<HomePage>
                 controller: tabController,
                 children: <Widget>[
                   CustomerList(),
-                  VehicleCards(),
+                  VehicleCards(username: widget.username),
                   ServicesList(username: widget.username),
                   CustomerList(),
                 ],

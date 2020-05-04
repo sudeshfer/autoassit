@@ -1,83 +1,74 @@
-import 'dart:async';
-import 'package:autoassit/Screens/Jobs/create_job.dart';
+import 'package:autoassit/Controllers/ApiServices/Customer_Services/getCustomer_vehicles.dart';
+import 'package:autoassit/Models/vehicleModel.dart';
 import 'package:autoassit/Utils/pre_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:folding_cell/folding_cell/widget.dart';
-import 'package:autoassit/Models/vehicleModel.dart';
-import 'package:autoassit/Controllers/ApiServices/Vehicle_Services/getVehicles_Service.dart';
+import 'package:progress_dialog/progress_dialog.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class ViewVehicle extends StatefulWidget {
-  final username;
-  ViewVehicle({Key key,this.username}) : super(key: key);
+class OwnedVehicles extends StatefulWidget {
+  final customer_id;
+  final customer_name;
+  OwnedVehicles({Key key,this.customer_id,this.customer_name}) : super(key: key);
 
   @override
-  _ViewVehicleState createState() => _ViewVehicleState();
+  _OwnedVehiclesState createState() => _OwnedVehiclesState();
 }
 
-class Debouncer {
-  final int milliseconds;
-  VoidCallback action;
-  Timer _timer;
+class _OwnedVehiclesState extends State<OwnedVehicles> {
 
-  Debouncer({this.milliseconds});
-
-  run(VoidCallback action) {
-    if (null != _timer) {
-      _timer.cancel();
-    }
-    _timer = Timer(Duration(milliseconds: milliseconds), action);
-  }
-}
-
-class _ViewVehicleState extends State<ViewVehicle> {
-
-  final _debouncer = Debouncer(milliseconds: 500);
+  SharedPreferences ownedVehi;
   List<Vehicle> vehicle = List();
-  List<Vehicle> filteredVehicles = List();
-
-  // List _selectedIndexs = [];
-  final _search = TextEditingController();
-
-  bool isClicked = false;
-  bool isSearchFocused = false;
-  String isExpanded = "";
+  ProgressDialog pr;
   bool isfetched = true;
 
-    @override
+   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
-    GetVehicleService.getVehicles().then((vehiclesFromServer) {
-      setState(() {
-        vehicle = vehiclesFromServer;
-        filteredVehicles = vehicle;
-        isfetched = false;
-      });
-    });
+
+    print("customer id = " + widget.customer_id);
+    print("customer name = " + widget.customer_name);
+    getCusVehicles();
   }
+
+  getCusVehicles() async {
+    SharedPreferences ownedVehi = await SharedPreferences.getInstance();
+    final body = {"cusID": ownedVehi.getString("cusId")};
+
+    GetCustomerVehicles.getVehicles(body).then((vehiclesfromserver){
+         setState(() {
+           vehicle = vehiclesfromserver;
+           isfetched = false;
+         });
+         print("vehicles fetched");
+    });
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
-      resizeToAvoidBottomPadding: false, // this avoids the overflow error
-      resizeToAvoidBottomInset: true,
-      appBar: _buildTopAppbar(context),
-      body:GestureDetector(
+        resizeToAvoidBottomPadding: false, // this avoids the overflow error
+        resizeToAvoidBottomInset: true,
+        appBar: _buildTopAppbar(context),
+        body: GestureDetector(
         onTap: () {
             FocusScope.of(context).requestFocus(FocusNode());
           },
          child: isfetched? PreLoader() :_buildBody(context),
       ) 
-      
-      
-    );
+        );
   }
 
    Widget _buildTopAppbar(BuildContext context) {
     return PreferredSize(
-      preferredSize: Size.fromHeight(190.0),
+      preferredSize: Size.fromHeight(150.0),
       child: Container(
         color: Colors.transparent,
-        height: MediaQuery.of(context).size.height/0.5,
+        height: MediaQuery.of(context).size.height / 5.6,
         alignment: Alignment.center,
         child: _buildStack(context),
       ),
@@ -89,7 +80,7 @@ class _ViewVehicleState extends State<ViewVehicle> {
       children: <Widget>[
         Positioned(
           child: Container(
-            height: MediaQuery.of(context).size.height - 420.0,
+            height: MediaQuery.of(context).size.height / 3.8,
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
               color: Color(0xFF81C784),
@@ -101,81 +92,34 @@ class _ViewVehicleState extends State<ViewVehicle> {
         ),
         Positioned(
             left: 10,
-            top: MediaQuery.of(context).size.height / 60.0,
+            top: MediaQuery.of(context).size.height / 25.0,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               // mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 Center(
                     child: Image.asset(
-                  "assets/images/view.png",
+                  "assets/images/owned.png",
                   width: 150,
-                  height: 150,
+                  height: 100,
                 )),
                 Padding(
-                  padding: const EdgeInsets.only(left: 30.0),
+                  padding: const EdgeInsets.only(left: 10.0,top: 10),
                   child: Center(
                     child: Text(
-                      'Vehicles\nList.. ',
+                      widget.customer_name +"'s\n    Vehicles List. . . . ",
                       style: TextStyle(
                           textBaseline: TextBaseline.alphabetic,
                           fontFamily: 'Montserrat',
-                          fontSize: 25.0,
-                          letterSpacing: 1,
+                          fontSize: 18.0,
                           fontWeight: FontWeight.w900,
                           color: Colors.white),
                     ),
                   ),
                 ),
               ],
-            )),
-        Positioned(
-            left: 20,
-            top: MediaQuery.of(context).size.height / 4.8,
-            child: Column(children: <Widget>[_buildSearchBar(context)]))
+            ))
       ],
-    );
-  }
-
-    Widget _buildSearchBar(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(right: 30.0),
-      width: MediaQuery.of(context).size.width / 1.4,
-      height: 45,
-      // margin: EdgeInsets.only(top: 32),
-      padding: EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 2),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(50)),
-          color: Colors.white,
-          boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 5)]),
-      child: TextField(
-        keyboardType: TextInputType.text,
-        // controller: _search,
-        onTap: () {
-          setState(() {
-            isSearchFocused = true;
-          });
-        },
-        onChanged: (string) {
-          _debouncer.run(() {
-            setState(() {
-              filteredVehicles = vehicle
-                  .where((u) =>
-                      (u.vNumber.toLowerCase().contains(string.toLowerCase())))
-                  .toList();
-            });
-          });
-        },
-        decoration: InputDecoration(
-          border: InputBorder.none,
-          prefixIcon: Icon(
-            Icons.search,
-            color: Colors.grey,
-            size: 30,
-          ),
-          hintText: 'search',
-        ),
-      ),
     );
   }
 
@@ -199,12 +143,12 @@ class _ViewVehicleState extends State<ViewVehicle> {
             ),
           );
         },
-        itemCount: filteredVehicles.length,
+        itemCount: vehicle.length,
       ),
     );
   }
 
-  Widget _buildFrontWidget(index) {
+   Widget _buildFrontWidget(index) {
     return Builder(
       builder: (BuildContext context) {
         return Container(
@@ -213,21 +157,21 @@ class _ViewVehicleState extends State<ViewVehicle> {
             child: Column(
               // mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text(filteredVehicles[index].vNumber,
+                Text(vehicle[index].cusName,
                     style: TextStyle(
                         color: Color(0xFF2e282a),
                         fontFamily: 'OpenSans',
                         fontSize: 15.0,
                         fontWeight: FontWeight.w800)),
                 Text(
-                    filteredVehicles[index].make +
-                        filteredVehicles[index].model,
+                    vehicle[index].make +
+                        vehicle[index].model,
                     style: TextStyle(
                         color: Color(0xFF2e282a),
                         fontFamily: 'OpenSans',
                         fontSize: 15.0,
                         fontWeight: FontWeight.w800)),
-                Text(filteredVehicles[index].odo,
+                Text(vehicle[index].odo,
                     style: TextStyle(
                         color: Color(0xFF2e282a),
                         fontFamily: 'OpenSans',
@@ -256,15 +200,9 @@ class _ViewVehicleState extends State<ViewVehicle> {
                       child: FlatButton(
                         onPressed: () {
                           print("clicked on history btn");
-                          Navigator.of(context).push(MaterialPageRoute(
-             builder: (context) => CreateJob(
-                                     username: widget.username,
-                                     vnumber: filteredVehicles[index].vNumber,
-                                     vehicle_name: filteredVehicles[index].make +" "+ filteredVehicles[index].model,
-                                     customer_name: filteredVehicles[index].cusName,)));
                         },
                         child: Text(
-                          "Assign Job",
+                          "See History",
                         ),
                         textColor: Colors.white,
                         color: Colors.indigoAccent,
@@ -285,19 +223,19 @@ class _ViewVehicleState extends State<ViewVehicle> {
         alignment: Alignment.center,
         child: Column(
           children: <Widget>[
-            Text(filteredVehicles[index].mYear,
+            Text(vehicle[index].mYear,
                 style: TextStyle(
                     color: Color(0xFF2e282a),
                     fontFamily: 'OpenSans',
                     fontSize: 15.0,
                     fontWeight: FontWeight.w800)),
-              Text(filteredVehicles[index].eCapacity,
+              Text(vehicle[index].eCapacity,
                 style: TextStyle(
                     color: Color(0xFF2e282a),
                     fontFamily: 'OpenSans',
                     fontSize: 15.0,
                     fontWeight: FontWeight.w800)),
-              Text(filteredVehicles[index].desc,
+              Text(vehicle[index].desc,
                 style: TextStyle(
                     color: Color(0xFF2e282a),
                     fontFamily: 'OpenSans',
