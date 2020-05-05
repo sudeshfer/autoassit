@@ -1,4 +1,5 @@
 import 'package:autoassit/Screens/Jobs/Widgets/addTask_page.dart';
+import 'package:autoassit/Screens/Jobs/Widgets/add_task_modelbox.dart';
 import 'package:autoassit/Screens/Jobs/Widgets/change_task_page.dart';
 import 'package:flutter/material.dart';
 import 'package:autoassit/Screens/Jobs/Widgets/utils.dart';
@@ -40,7 +41,17 @@ class _CreateJobState extends State<CreateJob> {
        ]) ,
        floatingActionButton: FloatingActionButton(
          backgroundColor: Color(0xFFef5350),
-         onPressed: (){},
+         onPressed: (){
+           showDialog(
+              barrierDismissible: false,
+              context: context,
+              builder: (BuildContext context) {
+                return Dialog(
+                    child: AddTaskModel(),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(12))));
+              });
+         },
          child: Icon(Icons.add),
          ),
          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

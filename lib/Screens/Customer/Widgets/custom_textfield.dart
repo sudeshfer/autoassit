@@ -8,15 +8,16 @@ class CustomTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-          child: TextField(
-        controller: controller,
-        keyboardType: TextInputType.number,
-        decoration: InputDecoration(
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(20))),
-            labelText: labelText),
-      ),
+    return Container(
+      margin: const EdgeInsets.only(bottom:10),
+      child: TextField(
+          controller: controller,
+          keyboardType: TextInputType.number,
+          decoration: InputDecoration(
+        border: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20))),
+        labelText: labelText),
+        ),
     );
   }
 }

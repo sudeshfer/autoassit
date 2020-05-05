@@ -487,7 +487,13 @@ class _ViewCustomerState extends State<ViewCustomer> {
                         return Dialog(
                            child: EditCustomer(fname: filteredCustomers[index].fName,
                                                lname: filteredCustomers[index].lName,
-                                               email: filteredCustomers[index].email),
+                                               email: filteredCustomers[index].email,
+                                               tel: filteredCustomers[index].telephone,
+                                               mobile: filteredCustomers[index].mobile,
+                                               pCode: filteredCustomers[index].adL1,
+                                               street: filteredCustomers[index].adL2,
+                                               city: filteredCustomers[index].adL3,
+                                               cLimit: filteredCustomers[index].cLimit,),
                            shape: RoundedRectangleBorder(
                              borderRadius: BorderRadius.all(Radius.circular(12))
                            ),
@@ -496,7 +502,7 @@ class _ViewCustomerState extends State<ViewCustomer> {
                     );
                 },
                 child: Text(
-                  "Edit Details",
+                  "Update Details",
                 ),
                 textColor: Colors.white,
                 color: Colors.indigoAccent,

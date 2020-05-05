@@ -7,7 +7,22 @@ class EditCustomer extends StatefulWidget {
   final fname;
   final lname;
   final email;
-  EditCustomer({Key key,this.fname,this.email,this.lname}) : super(key: key);
+  final tel;
+  final mobile;
+  final pCode;
+  final street;
+  final city;
+  final cLimit;
+  EditCustomer({Key key,
+               this.fname,
+               this.email,
+               this.lname,
+               this.tel,
+               this.mobile,
+               this.pCode,
+               this.street,
+               this.city,
+               this.cLimit}) : super(key: key);
 
   @override
   _EditCustomerState createState() => _EditCustomerState();
@@ -36,40 +51,61 @@ class _EditCustomerState extends State<EditCustomer> {
     _fname.text = widget.fname;
     _lname.text = widget.lname;
     _email.text = widget.email;
+    _tel.text = widget.tel;
+    _mobile.text = widget.mobile;
+    _p_code.text = widget.pCode;
+    _street.text = widget.street;
+    _city.text = widget.city;
+    _cLimit.text = widget.cLimit;
     print("Values set");
   }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Container(
+      height: MediaQuery.of(context).size.height/0.2,
       padding: const EdgeInsets.all(24.0),
-      child: Column(
-     mainAxisSize: MainAxisSize.min,
+      child: SingleChildScrollView(
+              child: Column(
+     mainAxisSize: MainAxisSize.max,
      children: <Widget>[
-       Center(
-           child: Text(
-         "Update Customer",
-         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-       )),
-       SizedBox(
-         height: 24,
-       ),
-       CustomTextField(
-           labelText: 'Edit First name', controller: _fname),
-       CustomTextField(
-           labelText: 'Edit First name', controller: _lname),
-       CustomTextField(
-           labelText: 'Edit First name', controller: _email),
+           Center(
+               child: Text(
+             "Update Customer",
+             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+           )),
+           SizedBox(
+             height: 20,
+           ),
+           CustomTextField(
+               labelText: 'Edit First name', controller: _fname),
+           CustomTextField(
+               labelText: 'Edit First name', controller: _lname),
+           CustomTextField(
+               labelText: 'Edit First Email', controller: _email),
+           CustomTextField(
+               labelText: 'Edit Telephone', controller: _tel),
+               CustomTextField(
+               labelText: 'Edit Mobile', controller: _mobile),
+               CustomTextField(
+               labelText: 'Edit Credit Limit', controller: _cLimit),
+               CustomTextField(
+               labelText: 'Edit Adress Line 1', controller: _p_code),
+               CustomTextField(
+               labelText: 'Edit Adress Line 2', controller: _street),
+               CustomTextField(
+               labelText: 'Edit Adress Line 3', controller: _city),     
     
-       CustomModalActionButton(
-         onClose: () {
-           Navigator.of(context).pop();
-         },
-         onSave: () {
-          Dialogs.successDialog(context, "Done", "Details Updated Successfully !");
-         },
-       )
+           CustomModalActionButton(
+             onClose: () {
+               Navigator.of(context).pop();
+             },
+             onSave: () {
+              Dialogs.successDialog(context, "Done", "Details Updated Successfully !");
+             },
+           )
      ],
+          ),
       ),
     );
   }
