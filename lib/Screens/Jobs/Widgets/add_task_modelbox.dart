@@ -1,5 +1,7 @@
 import 'package:autoassit/Controllers/ApiServices/Job_services/get_services.dart';
 import 'package:autoassit/Models/servicesModel.dart';
+import 'package:autoassit/Screens/Jobs/Widgets/custom_modal_action_button.dart';
+import 'package:autoassit/Utils/dialogs.dart';
 import 'package:flutter/material.dart';
 import 'package:searchable_dropdown/searchable_dropdown.dart';
 
@@ -84,6 +86,17 @@ class _AddTaskModelState extends State<AddTaskModel> {
         },
         isExpanded: true,
       ),
+      SizedBox(
+              height: 24,
+            ),
+      CustomModalActionButton(
+             onClose: () {
+               Navigator.of(context).pop();
+             },
+             onSave: () {
+              Dialogs.successDialog(context, "Done", "Job created !");
+             },
+           )
         ],
       ),
     );

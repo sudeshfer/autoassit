@@ -17,12 +17,12 @@ class Task {
 }
 
 final List<Task> _taskList = [
-  new Task("08:00", "Full Body wash", "Completed", true),
-  new Task("10:00", "Replacing Breal Liners", "Completed", true),
-  new Task("12:00", "Changing SIgnal Lights", "On Progress", false),
-  new Task("14:00", "Check wheel alignment", "Not Started", false),
-  new Task("16:00", "Check wheel alignment", "Not Started", false),
-  new Task("18:00", "Check wheel alignment", "Not Started", false),
+  new Task("Task 1", "Full Body wash", "Completed", true),
+  new Task("Task 2", "Replacing Breal Liners", "Completed", true),
+  new Task("Task 3", "Changing SIgnal Lights", "On Progress", false),
+  new Task("Task 4", "Check wheel alignment", "Not Started", false),
+  new Task("Task 5", "Check wheel alignment", "Not Started", false),
+  new Task("Task 6", "Check wheel alignment", "Not Started", false),
 ];
 
 class _AddJobTaskPageState extends State<AddJobTaskPage> {
