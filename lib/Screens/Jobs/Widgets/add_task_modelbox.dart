@@ -1,3 +1,4 @@
+import 'package:autoassit/Controllers/ApiServices/Job_services/get_products.dart';
 import 'package:autoassit/Controllers/ApiServices/Job_services/get_services.dart';
 import 'package:autoassit/Models/servicesModel.dart';
 import 'package:autoassit/Screens/Jobs/Widgets/custom_modal_action_button.dart';
@@ -13,19 +14,32 @@ class AddTaskModel extends StatefulWidget {
 }
 
 class _AddTaskModelState extends State<AddTaskModel> {
-  List<int> selectedServices = [];
-  List<int> selectedProducts = [];
-  final List<DropdownMenuItem> services = [];
-  final List<DropdownMenuItem> products = [];
+  List<Service> selectedServices = [];
+  List<Service> selectedProducts = [];
 
-  List<Service> service = List();
+  Service _selectedService;
+
+  List<Service> _service = List();
+  List<Service> _filteredService = List();
+
+  List<Service> _product = List();
+  List<Service> _filteredProduct = List();
+
+  Service _selectedProd;
 
   @override
   void initState() {
     super.initState();
     GetServicesController.getServices().then((servicesFromServer) {
       setState(() {
-        service = servicesFromServer;
+        _filteredService = servicesFromServer;
+        print("fetched");
+      });
+    });
+
+    GetProductController.getProducts().then((proFromServer) {
+      setState(() {
+        _filteredProduct = proFromServer;
         print("fetched");
       });
     });
@@ -39,64 +53,56 @@ class _AddTaskModelState extends State<AddTaskModel> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Center(
-                child: Text(
-              "Add new Job task",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-            )),
-            SizedBox(
-              height: 24,
-            ),
-             SearchableDropdown.multiple(
-        items: services,
-        selectedItems: selectedServices,
-        hint: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Text("Select Service"),
-        ),
-        searchHint: "Select Service",
-        onChanged: (value) {
-          setState(() {
-            selectedServices = value;
-          });
-        },
-        closeButton: (selectedServices) {
-          return (selectedServices.isNotEmpty
-              ? "Save ${selectedServices.length == 1 ? '"' + services[selectedServices.first].value.toString() + '"' : '(' + selectedServices.length.toString() + ')'}"
-              : "Save without selection");
-        },
-        isExpanded: true,
-      ),
-      SearchableDropdown.multiple(
-        items: products,
-        selectedItems: selectedProducts,
-        hint: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Text("Select Product"),
-        ),
-        searchHint: "Select Product",
-        onChanged: (value) {
-          setState(() {
-            selectedProducts = value;
-          });
-        },
-        closeButton: (selectedProducts) {
-          return (selectedProducts.isNotEmpty
-              ? "Save ${selectedProducts.length == 1 ? '"' + products[selectedProducts.first].value.toString() + '"' : '(' + selectedProducts.length.toString() + ')'}"
-              : "Save without selection");
-        },
-        isExpanded: true,
-      ),
-      SizedBox(
-              height: 24,
-            ),
-      CustomModalActionButton(
-             onClose: () {
-               Navigator.of(context).pop();
-             },
-             onSave: () {
+              child: Text(
+            "Add new Job task",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          )),
+          SizedBox(
+            height: 24,
+          ),
+          DropdownButton<Service>(
+            hint: Text("  Select Ref"),
+            value: _selectedService,
+            onChanged: (Service value) {
+              setState(() {
+                _selectedService = value;
+                selectedServices.add(_selectedService);
+              });
+              print("--------services-------");
+              print(selectedServices.length);
+              print("--------services-------");
+            },
+            items: _filteredService.map((Service val) {
+              return DropdownMenuItem<Service>(
+                value: val,
+                child: Row(
+                  children: <Widget>[
+                    Text(
+                      "  " + val.serviceName,
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ],
+                ),
+              );
+            }).toList(),
+          ),
+
+
+
+
+
+          
+          SizedBox(
+            height: 24,
+          ),
+          CustomModalActionButton(
+            onClose: () {
+              Navigator.of(context).pop();
+            },
+            onSave: () {
               Dialogs.successDialog(context, "Done", "Job created !");
-             },
-           )
+            },
+          )
         ],
       ),
     );

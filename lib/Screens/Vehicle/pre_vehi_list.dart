@@ -252,6 +252,7 @@ class _PreVehicleListState extends State<PreVehicleList> {
     final vnumber = filteredVehicles[index].vNumber;
     final vehicle_name = filteredVehicles[index].make +" "+ filteredVehicles[index].model;
     final customer_name = filteredVehicles[index].cusName;
+    final cusId = filteredVehicles[index].cusid;
 
     print(vehicle_name +"\n"+ vnumber);
 
@@ -260,6 +261,7 @@ class _PreVehicleListState extends State<PreVehicleList> {
                                      username: widget.username,
                                      vnumber: vnumber,
                                      vehicle_name: vehicle_name,
-                                     customer_name: customer_name,)));
+                                     customer_name: customer_name,
+                                     cusId: cusId,)));
   }
 }
