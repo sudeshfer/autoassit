@@ -140,9 +140,8 @@ class _SentScreenState extends State<SentScreen> {
 }
 
 class VerifyingScreen extends StatefulWidget {
- final username;
   VerifyingScreen(
-      {Key key,this.username})
+      {Key key})
       : super(key: key);
 
   @override
@@ -167,9 +166,7 @@ class _VerifyingScreenState extends State<VerifyingScreen> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => HomePage(
-              username: widget.username,
-            ),
+            builder: (context) => HomePage(),
           ),
         );
       },

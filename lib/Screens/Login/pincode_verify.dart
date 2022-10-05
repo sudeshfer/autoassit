@@ -101,9 +101,7 @@ class _PincodeVerifyState extends State<PincodeVerify> {
       Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => VerifyingScreen(
-          username: widget.username,
-        ),
+        builder: (context) => VerifyingScreen(),
       ),
     );
     

@@ -1,5 +1,6 @@
 class Vehicle {
-
+  
+  String vID;
   String vNumber;
   String make;
   String model;
@@ -11,11 +12,12 @@ class Vehicle {
   String cusName;
   
  
-  Vehicle({this.vNumber,this.make,this.model,this.mYear,this.odo,this.eCapacity,this.desc,this.cusid,this.cusName});
+  Vehicle({this.vID,this.vNumber,this.make,this.model,this.mYear,this.odo,this.eCapacity,this.desc,this.cusid,this.cusName});
  
   factory Vehicle.fromJson(Map<String, dynamic> json) {
     return Vehicle(
-
+      
+      vID: json["_id"] as String,
       vNumber: json["vnumber"] as String,
       make: json["make"] as String,
       model: json["model"] as String,

@@ -1,9 +1,10 @@
+import 'package:autoassit/Screens/Jobs/job_Records.dart';
 import 'package:autoassit/Screens/Vehicle/pre_vehi_list.dart';
 import 'package:flutter/material.dart';
 
 class ServicesList extends StatefulWidget {
-  final username;
-  ServicesList({Key key, this.username}) : super(key: key);
+
+  ServicesList({Key key}) : super(key: key);
 
   @override
   _ServicesListState createState() => _ServicesListState();
@@ -35,17 +36,21 @@ class _ServicesListState extends State<ServicesList> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => PreVehicleList(
-                      username: widget.username,
-                    ),
+                    builder: (context) => PreVehicleList(),
                   ),
                 );
-              }),
+              }
+              ),
               SizedBox(width: 15.0),
               getServicesCard(
                   'assets/images/jobrecords.png', '    Job\nRecords',
                   onTap: () {
-                print("Go to view customer screen !");
+               Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => JobRecords(),
+                  ),
+                );
               }),
               SizedBox(width: 15.0),
               getServicesCard('assets/images/products.png', 'Products',
@@ -69,7 +74,7 @@ class _ServicesListState extends State<ServicesList> {
     return Stack(
       children: <Widget>[
         Container(
-          height: MediaQuery.of(context).size.height / 3.5,
+          height: MediaQuery.of(context).size.height / 4,
           width: 140.0,
           child: Container(
             decoration: BoxDecoration(
@@ -104,7 +109,7 @@ class _ServicesListState extends State<ServicesList> {
         ),
         Padding(
           padding: EdgeInsets.only(
-              left: 45.0, top: MediaQuery.of(context).size.height / 3.9),
+              left: 45.0, top: MediaQuery.of(context).size.height / 4.5),
           child: GestureDetector(
             onTap: onTap,
             child: Container(

@@ -12,7 +12,7 @@ class CustomTextField extends StatelessWidget {
       margin: const EdgeInsets.only(bottom:10),
       child: TextField(
           controller: controller,
-          keyboardType: TextInputType.number,
+          // keyboardType: TextInputType.number,
           decoration: InputDecoration(
         border: OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(20))),

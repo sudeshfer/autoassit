@@ -1,8 +1,10 @@
-import 'dart:developer';
-
+import 'package:autoassit/Controllers/ApiServices/auth_services/OtpLoginService.dart';
+import 'package:autoassit/Models/userModel.dart';
+import 'package:autoassit/Providers/AuthProvider.dart';
 import 'package:autoassit/Screens/HomePage/home.dart';
 import 'package:autoassit/Screens/Login/login_page.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -14,6 +16,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
 
   SharedPreferences initializeToken;
+   UserModel userModel;
 
   @override
   void initState() {
@@ -25,17 +28,8 @@ class _SplashScreenState extends State<SplashScreen> {
   navigateToHome() async {
     SharedPreferences login = await SharedPreferences.getInstance();
     final _usrename = login.getString("username");
-    Future.delayed(
-      Duration(seconds: 5),
-      () {
-        Navigator.pop(context);
-        Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(
-          username: _usrename,
-        ),
-        ),
-        );
-      },
-    );
+
+    startLogin();
   }
 
    navigateToLogin(){
@@ -63,6 +57,40 @@ class _SplashScreenState extends State<SplashScreen> {
       print(_token);
       navigateToHome();
     }
+  }
+
+  startLogin() async {
+    SharedPreferences login = await SharedPreferences.getInstance();
+    final phonenum = login.getString("phonenum");
+    print("got phone num $phonenum");
+    final body = {"phone": "$phonenum"};
+
+    LoginwithOtpService.LoginWithOtp(body,context).then((success) async {
+      print(success);
+      if (success) {
+        
+        final _token = login.getString("gettoken");
+        userModel = Provider.of<AuthProvider>(context, listen: false).userModel;
+        print("garage name isssssssssss ${userModel.garageName}");
+
+        initializeToken.setString("authtoken", _token);
+       print("login success");
+        Future.delayed(
+      Duration(seconds: 3),
+      () {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => HomePage()));
+      },
+    );
+
+        
+      } else {
+
+        print("login failed");
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => LoginPage()));
+      }
+    });
   }
 
 

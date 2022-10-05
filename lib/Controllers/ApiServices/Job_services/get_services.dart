@@ -2,13 +2,22 @@ import 'dart:convert';
 import 'package:autoassit/Controllers/ApiServices/variables.dart';
 import 'package:autoassit/Models/servicesModel.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
  
 class GetServicesController {
   static const String url = '${URLS.BASE_URL}/proser/getServices';
  
   static Future<List<Service>> getServices() async {
+     SharedPreferences initializeToken = await SharedPreferences.getInstance();
+
+    final body = {
+        "token": initializeToken.getString("authtoken")
+      };
+
+      Map<String, String> requestHeaders = {'Content-Type': 'application/json'};
+      
     try {
-      final response = await http.get(url);
+      final response = await http.post(url, body: jsonEncode(body), headers: requestHeaders);
       if (response.statusCode == 200) {
         List<Service> list = parseServices(response.body);
         return list;

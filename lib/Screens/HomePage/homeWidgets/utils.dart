@@ -1,9 +1,4 @@
-import 'package:flutter/material.dart';
-import 'dart:io';
 
-import 'package:shared_preferences/shared_preferences.dart';
-
-//Sudesh kiyanne ponnayek
 
 class Utils {
   static String getWelcomeMessage() {

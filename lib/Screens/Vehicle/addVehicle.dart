@@ -1,8 +1,12 @@
-import 'dart:io';
 import 'package:autoassit/Controllers/ApiServices/Vehicle_Services/addVehicle_Service.dart';
+import 'package:autoassit/Models/userModel.dart';
+import 'package:autoassit/Providers/AuthProvider.dart';
 import 'package:autoassit/Screens/Vehicle/view_vehicle.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:progress_dialog/progress_dialog.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AddVehicle extends StatefulWidget {
   final customer_id;
@@ -22,19 +26,35 @@ class _AddVehicleState extends State<AddVehicle> {
   final _vODO = TextEditingController();
   final _vDescription = TextEditingController();
 
+  UserModel userModel;
+  ProgressDialog pr;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    userModel = Provider.of<AuthProvider>(context, listen: false).userModel;
     print("customer id = " + widget.customer_id);
     print("customer name = " + widget.customer_name);
   }
 
   @override
   Widget build(BuildContext context) {
+    pr = new ProgressDialog(context, type: ProgressDialogType.Normal);
+
+    pr.style(
+        message: 'Saving Info...',
+        borderRadius: 10.0,
+        progressWidget: Container(
+            height: 30,
+            width: 30,
+            decoration: BoxDecoration(image: DecorationImage(image: AssetImage('assets/images/loading2.gif'), fit: BoxFit.cover))),
+        elevation: 10.0,
+        insetAnimCurve: Curves.easeInOut,
+        progressTextStyle: TextStyle(fontFamily: 'Montserrat'));
+
     return Scaffold(
-        resizeToAvoidBottomPadding: false, // this avoids the overflow error
+        // this avoids the overflow error
         resizeToAvoidBottomInset: true,
         appBar: _buildTopAppbar(context),
         body: GestureDetector(
@@ -73,9 +93,7 @@ class _AddVehicleState extends State<AddVehicle> {
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
               color: Color(0xFF81C784),
-              borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(75.0),
-                  bottomRight: Radius.circular(75.0)),
+              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(75.0), bottomRight: Radius.circular(75.0)),
             ),
           ),
         ),
@@ -124,10 +142,7 @@ class _AddVehicleState extends State<AddVehicle> {
             padding: const EdgeInsets.all(5.0),
             child: Text(
               "Customer Name - " + widget.customer_name,
-              style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.w900),
+              style: TextStyle(fontFamily: 'Montserrat', fontSize: 15.0, fontWeight: FontWeight.w900),
             )),
         Container(
           height: MediaQuery.of(context).size.height,
@@ -138,7 +153,7 @@ class _AddVehicleState extends State<AddVehicle> {
               buildTextfield(context, 'Vehicle Number', Icons.code, _vNumber),
               buildTextfield(context, 'Make', Icons.branding_watermark, _vMake),
               buildTextfield(context, 'Model', Icons.view_module, _vModel),
-              buildTextfield(context, 'Manufactured Year',Icons.calendar_view_day, _vMyear),
+              buildTextfield(context, 'Manufactured Year', Icons.calendar_view_day, _vMyear),
               buildTextfield(context, 'ODO (Milage)', Icons.timer, _vODO),
               buildTextfield(context, 'Engine Capacity', Icons.tonality, _vCapacity),
 
@@ -146,14 +161,11 @@ class _AddVehicleState extends State<AddVehicle> {
                 width: MediaQuery.of(context).size.width / 1.2,
                 height: 70,
                 margin: EdgeInsets.only(top: 32),
-                padding:
-                    EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 2),
+                padding: EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 2),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(50)),
                     color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(color: Colors.black12, blurRadius: 5)
-                    ]),
+                    boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 5)]),
                 child: TextField(
                   controller: _vDescription,
                   maxLines: 5,
@@ -175,17 +187,14 @@ class _AddVehicleState extends State<AddVehicle> {
     );
   }
 
-  Widget buildTextfield(BuildContext context, String title, IconData icon,
-      TextEditingController controller) {
+  Widget buildTextfield(BuildContext context, String title, IconData icon, TextEditingController controller) {
     return Container(
       width: MediaQuery.of(context).size.width / 1.2,
       height: 45,
       padding: EdgeInsets.only(left: 16, right: 16, bottom: 4),
       margin: EdgeInsets.only(top: 32),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(50)),
-          color: Colors.white,
-          boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 5)]),
+          borderRadius: BorderRadius.all(Radius.circular(50)), color: Colors.white, boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 5)]),
       child: TextField(
         controller: controller,
         decoration: InputDecoration(
@@ -259,16 +268,17 @@ class _AddVehicleState extends State<AddVehicle> {
         animType: AnimType.TOPSLIDE,
         tittle: title,
         desc: dec,
-        btnOkText: 'Goto VehicleList !',
-        btnCancelText: 'Regsiter Another !',
+        btnOkText: 'VehicleList !',
+        btnCancelText: 'Regsiter !',
         btnCancelOnPress: () {},
         btnOkOnPress: () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => ViewVehicle()));
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => ViewVehicle()));
         }).show();
   }
 
-  postVehicleData() {
+  postVehicleData() async {
+    pr.show();
+    SharedPreferences initializeToken = await SharedPreferences.getInstance();
     final body = {
       "vnumber": _vNumber.text,
       "make": _vMake.text,
@@ -278,15 +288,18 @@ class _AddVehicleState extends State<AddVehicle> {
       "capacity": _vCapacity.text,
       "description": _vDescription.text,
       "cusID": widget.customer_id,
-      "cusName": widget.customer_name
+      "cusName": widget.customer_name,
+      "token": initializeToken.getString("authtoken")
     };
     RegisterVehicleService.RegisterVehicle(body).then((success) {
       print(success);
       final _result = success;
       if (_result == "success") {
+        pr.hide();
         clearcontrollers();
         successDialog('Vehicle Registration successfull', 'Click Ok to see !');
       } else {
+        pr.hide();
         errorDialog('ERROR', _result);
       }
     });

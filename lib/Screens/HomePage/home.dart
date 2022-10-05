@@ -1,19 +1,21 @@
 import 'dart:io';
+import 'package:autoassit/Models/userModel.dart';
+import 'package:autoassit/Providers/AuthProvider.dart';
+import 'package:autoassit/Screens/HomePage/homeWidgets/project_card_tile.dart';
 import 'package:autoassit/Screens/HomePage/homeWidgets/service_cards.dart';
 import 'package:autoassit/Screens/HomePage/homeWidgets/vehicle_cards.dart';
 import 'package:autoassit/Utils/loading_dialogs.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:connection_status_bar/connection_status_bar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:autoassit/Screens/HomePage/homeWidgets/customer_cards.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:autoassit/Screens/HomePage/homeWidgets/utils.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
-  final username;
-  HomePage({Key key, this.title,this.username}) : super(key: key);
+  HomePage({Key key, this.title}) : super(key: key);
 
   final String title;
 
@@ -26,14 +28,16 @@ class _HomePageState extends State<HomePage>
   TabController tabController;
   String welcome_msg;
   String username;
+  UserModel userModel;
+  ScrollController _scrollController;
 
   @override
   Future<void> initState() {
     // TODO: implement initState
     tabController = TabController(vsync: this, length: 4);
     welcome_msg = Utils.getWelcomeMessage();
-
-    print(widget.username);
+    userModel = Provider.of<AuthProvider>(context, listen: false).userModel;
+    _scrollController = ScrollController();
 
     super.initState();
   }
@@ -45,52 +49,54 @@ class _HomePageState extends State<HomePage>
     return new WillPopScope(
       onWillPop: _onBackPressed,
       child: new Scaffold(
-          body: Column(
+          body: SingleChildScrollView(
+                      child: Column(
         children: <Widget>[
-          SizedBox(height: screenHeight/14),
-          Container(
-              width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.only(right: 10.0),
-              child: _buildHeader(context)),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(right: 10.0),
-                  child: Image.asset(
-                    'assets/images/logo.png',
-                    width: 60,
-                    height: 60,
+            SizedBox(height: screenHeight/14),
+            Container(
+                width: MediaQuery.of(context).size.width,
+                padding: EdgeInsets.only(right: 10.0),
+                child: _buildHeader(context)),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(right: 10.0),
+                    child: Image.asset(
+                      'assets/images/logo.png',
+                      width: 60,
+                      height: 60,
+                    ),
                   ),
-                ),
-                Text(
-                  'AutoAssit',
-                  style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontSize: 40.0,
-                      fontWeight: FontWeight.w900),
-                ),
-              ],
+                  Text(
+                    'AutoAssit',
+                    style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        fontSize: 40.0,
+                        fontWeight: FontWeight.w900),
+                  ),
+                ],
+              ),
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: 10.0),
-            child: _buildTabBar(context),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 10.0),
-            child: Container(
-              // color: Colors.amber,
-              // height: MediaQuery.of(context).size.height - 430.0,
-              height: MediaQuery.of(context).size.height / 2.8,
-              child: _buildTabView(context)
+            Padding(
+              padding: EdgeInsets.only(left: 10.0),
+              child: _buildTabBar(context),
             ),
-          ),
-          _buildExpansionTile(context)
+            Padding(
+              padding: const EdgeInsets.only(top: 10.0),
+              child: Container(
+                // color: Colors.amber,
+                // height: MediaQuery.of(context).size.height - 430.0,
+                height: MediaQuery.of(context).size.height / 3.4,
+                child: _buildTabView(context)
+              ),
+            ),
+            _buildExpansionTile(context)
         ],
-      )),
+      ),
+          )),
     );
   }
 
@@ -182,8 +188,8 @@ class _HomePageState extends State<HomePage>
                 controller: tabController,
                 children: <Widget>[
                   CustomerList(),
-                  VehicleCards(username: widget.username),
-                  ServicesList(username: widget.username),
+                  VehicleCards(),
+                  ServicesList(),
                   CustomerList(),
                 ],
               );
@@ -191,19 +197,29 @@ class _HomePageState extends State<HomePage>
 
   Widget _buildExpansionTile(BuildContext context) {
     return ExpansionTile(
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(left: 25.0, top: 8.0),
-            child: Text("On-going jobs",
-                style: TextStyle(
-                    fontSize: 16.0,
-                    fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.w900)),
-          )
-        ],
+      title: Container(
+        child: Row(
+          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(left: 25.0),
+              child: Text("In-Progress jobs",
+                  style: TextStyle(
+                      fontSize: 16.0,
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.w900)),
+            )
+          ],
+        ),
       ),
+      initiallyExpanded: true,
+      children: <Widget>[
+        Container(
+                child: SingleChildScrollView(
+                  controller: _scrollController,
+                  child: ProjectCardTile()),
+              )
+      ],
     );
   }
 
@@ -216,10 +232,10 @@ class _HomePageState extends State<HomePage>
       margin: const EdgeInsets.only(left: 20.0),
       padding: const EdgeInsets.all(5.0),
       child: Text(
-        welcome_msg+ "\n"+ widget.username,
+        "$welcome_msg"+ "\n"+ "${userModel.userName} / ${userModel.garageName}",
         style: TextStyle(
             fontFamily: 'Montserrat',
-            fontSize: 15.0,
+            fontSize: 13.0,
             fontWeight: FontWeight.w900),
       ),
     );

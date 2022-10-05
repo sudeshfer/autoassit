@@ -1,9 +1,11 @@
 import 'dart:async';
-import 'package:autoassit/Screens/Vehicle/addVehicle.dart';
-import 'package:autoassit/Utils/pre_loader.dart';
-import 'package:flutter/material.dart';
-import 'package:autoassit/Models/customerModel.dart';
+
 import 'package:autoassit/Controllers/ApiServices/Customer_Services/getCustomers_Service.dart';
+import 'package:autoassit/Models/customerModel.dart';
+import 'package:autoassit/Screens/Vehicle/addVehicle.dart';
+import 'package:autoassit/Utils/noResponseWidgets/noCustomersMsg.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_skeleton/flutter_skeleton.dart';
 
 class PreCustomerList extends StatefulWidget {
   PreCustomerList({Key key}) : super(key: key);
@@ -36,39 +38,64 @@ class _PreCustomerListState extends State<PreCustomerList> {
   final _search = TextEditingController();
   bool isSearchFocused = false;
   bool isfetched = true;
+  bool isEmpty = false;
+  ScrollController _scrollController;
 
   @override
   void initState() {
     super.initState();
+    _scrollController = ScrollController();
     GetCustomerService.getCustomers().then((customersFromServer) {
-      setState(() {
-        customer = customersFromServer;
-        filteredCustomers = customer;
-        isfetched = false;
-      });
+      if (customersFromServer.isNotEmpty) {
+        setState(() {
+          customer = customersFromServer;
+          filteredCustomers = customer;
+          isfetched = false;
+        });
+      } else {
+        setState(() {
+          isEmpty = true;
+          isfetched = false;
+        });
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomPadding: false, // this avoids the overflow error
+        // this avoids the overflow error
         resizeToAvoidBottomInset: true,
         appBar: _buildTopAppbar(context),
         body: GestureDetector(
           onTap: () {
             FocusScope.of(context).requestFocus(FocusNode());
           },
-          child: isfetched? PreLoader() :_buildBody(context),
+          child: isfetched
+              ? SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  child: ListSkeleton(
+                    style: SkeletonStyle(
+                        theme: SkeletonTheme.Light,
+                        isShowAvatar: false,
+                        isCircleAvatar: false,
+                        barCount: 3,
+                        // colors: [Color(0xFF8E8CD8), Color(0xFF81C784), Color(0xffFFE082)],
+                        isAnimation: true),
+                  ),
+                )
+              : isEmpty
+                  ? NoCustomersMsg()
+                  : _buildBody(context),
         ));
   }
 
   Widget _buildTopAppbar(BuildContext context) {
     return PreferredSize(
-      preferredSize: Size.fromHeight(190.0),
+      preferredSize: Size.fromHeight(150.0),
       child: Container(
         color: Colors.transparent,
-        height: MediaQuery.of(context).size.height / 0.5,
+        // height: MediaQuery.of(context).size.height / 0.5,
         alignment: Alignment.center,
         child: _buildStack(context),
       ),
@@ -84,9 +111,7 @@ class _PreCustomerListState extends State<PreCustomerList> {
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
               color: Color(0xFF8E8CD8),
-              borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(75.0),
-                  bottomRight: Radius.circular(75.0)),
+              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(75.0), bottomRight: Radius.circular(75.0)),
             ),
           ),
         ),
@@ -100,8 +125,8 @@ class _PreCustomerListState extends State<PreCustomerList> {
                 Center(
                     child: Image.asset(
                   "assets/images/personas.png",
-                  width: 140,
-                  height: 100,
+                  // width: 150,
+                  height: MediaQuery.of(context).size.height / 8.0,
                 )),
                 Padding(
                   padding: const EdgeInsets.only(left: 20.0),
@@ -120,25 +145,23 @@ class _PreCustomerListState extends State<PreCustomerList> {
                 ),
               ],
             )),
-        Positioned(
-            left: 20,
-            top: MediaQuery.of(context).size.height / 4.8,
-            child: Column(children: <Widget>[_buildSearchBar(context)]))
+        // Positioned(
+        //     left: 20,
+        //     top: MediaQuery.of(context).size.height / 4.8,
+        //     child: Column(children: <Widget>[_buildSearchBar(context)]))
       ],
     );
   }
 
   Widget _buildSearchBar(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(right: 30.0),
-      width: MediaQuery.of(context).size.width / 1.4,
-      height: 45,
+      width: MediaQuery.of(context).size.width / 1.2,
+      height: MediaQuery.of(context).size.height / 15,
+      margin: EdgeInsets.only(top: 15),
       // margin: EdgeInsets.only(top: 32),
       padding: EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 2),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(50)),
-          color: Colors.white,
-          boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 5)]),
+          borderRadius: BorderRadius.all(Radius.circular(50)), color: Colors.white, boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 5)]),
       child: TextField(
         keyboardType: TextInputType.text,
         // controller: _search,
@@ -150,10 +173,7 @@ class _PreCustomerListState extends State<PreCustomerList> {
         onChanged: (string) {
           _debouncer.run(() {
             setState(() {
-              filteredCustomers = customer
-                  .where((u) =>
-                      (u.fName.toLowerCase().contains(string.toLowerCase())))
-                  .toList();
+              filteredCustomers = customer.where((u) => (u.fName.toLowerCase().contains(string.toLowerCase()))).toList();
             });
           });
         },
@@ -171,27 +191,28 @@ class _PreCustomerListState extends State<PreCustomerList> {
   }
 
   Widget _buildBody(BuildContext context) {
-    return Center(
-      child: ListView.builder(
-        scrollDirection: Axis.vertical,
-        itemBuilder: (context, index) {
-          return Container(
-            child: _getCustomerList(index,
-                                    'assets/images/cus_avatar.png',
-                                    filteredCustomers[index].fName +
-                                    " " +
-                                    filteredCustomers[index].lName,
-                                    filteredCustomers[index].cusid,
-                                    filteredCustomers),
-          );
-        },
-        itemCount: filteredCustomers.length,
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          _buildSearchBar(context),
+          ListView.builder(
+            scrollDirection: Axis.vertical,
+            controller: _scrollController,
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              return Container(
+                child: _getCustomerList(index, 'assets/images/cus_avatar.png', filteredCustomers[index].fName + " " + filteredCustomers[index].lName,
+                    filteredCustomers[index].cusid, filteredCustomers),
+              );
+            },
+            itemCount: filteredCustomers.length,
+          ),
+        ],
       ),
     );
   }
 
   Widget _getCustomerList(index, String imgPath, cusName, phone, filteredCustomers) {
-
     return Padding(
       padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
       child: GestureDetector(
@@ -212,12 +233,7 @@ class _PreCustomerListState extends State<PreCustomerList> {
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Padding(
                   padding: const EdgeInsets.only(left: 15.0),
-                  child: Text(cusName,
-                      style: TextStyle(
-                          fontFamily: 'Montserrat',
-                          fontSize: 17.0,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 1)),
+                  child: Text(cusName, style: TextStyle(fontFamily: 'Montserrat', fontSize: 17.0, fontWeight: FontWeight.bold, letterSpacing: 1)),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 15.0),
@@ -234,9 +250,7 @@ class _PreCustomerListState extends State<PreCustomerList> {
               icon: Icon(Icons.add_circle_outline),
               color: Colors.black,
               onPressed: () {
-
                 _navigateToVehicleRegistration(index);
-
               },
             )
           ],
@@ -246,15 +260,11 @@ class _PreCustomerListState extends State<PreCustomerList> {
   }
 
   _navigateToVehicleRegistration(index) {
+    final customerId = filteredCustomers[index].cusid;
+    final customerName = filteredCustomers[index].fName + " " + filteredCustomers[index].lName;
 
-    final customer_id = filteredCustomers[index].cusid;
-    final customer_name = filteredCustomers[index].fName +" "+ filteredCustomers[index].lName;
+    print(customerId + "\n" + customerName);
 
-    print(customer_id +"\n"+ customer_name);
-
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => AddVehicle(
-                                     customer_id: customer_id,
-                                     customer_name: customer_name)));
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddVehicle(customer_id: customerId, customer_name: customerName)));
   }
 }

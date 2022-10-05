@@ -160,7 +160,8 @@ class _ResetPasswordState extends State<ResetPassword> {
                             "code": _resetCode.text
                           };
 
-                          VerifyEmailService.VerifyEmail(body).then((success) {
+                          VerifyEmailService.VerifyEmail(body,context).then((success) {
+                            print("result is $success");
                             if (success) {
                               log('account verified');
 
@@ -228,7 +229,7 @@ class _ResetPasswordState extends State<ResetPassword> {
   }
 
   bool validatePhone(){
-    if(_resetCode.text.length == 6){
+    if(_resetCode.text.length >= 5){
       print("valid code");
       return true;
     }
